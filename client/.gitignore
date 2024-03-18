@@ -3,5 +3,5 @@
 node_modules/
 
 *.log
-react-frontend/package-lock.json
+package-lock.json
 .vercel
