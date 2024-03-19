@@ -1,6 +1,5 @@
 // App.js
 import React, { useState, useEffect } from "react";
-import "/src/styles/app.css";
 import Sidebar from "/src/pages/home/sidebar/Sidebar.jsx";
 import Header from "/src/pages/home/header/Header.jsx";
 import MainBody from "/src/pages/home/body-components/MainBody.jsx";
@@ -61,13 +60,18 @@ const LandingPage = () => {
   };
 
   return (
-    <div className="flex h-screen bg-red">
-      <Sidebar handleSideBarButtonClick={handleSideBarButtonClick} />
-      <div className="flex-1 main-content">
-        <Header
-          handleSelectChange={handleSelectChange}
-          handleDateChange={handleDateChange}
-        />
+    <div className="flex bg-slate-200 h-dvh">
+      <div className="sm:h-dvh w-fit xl:w-1/6 flex flex-col p-4 shadow-md bg-gradient-to-r from-red-200 via-mint-500 to-purple-300">
+        <Sidebar handleSideBarButtonClick={handleSideBarButtonClick} />
+      </div>
+
+      <div className="w-fit xl:w-5/6 flex flex-col p-2 gap-y-2">
+        <div className="">
+          <Header
+            handleSelectChange={handleSelectChange}
+            handleDateChange={handleDateChange}
+          />
+        </div>
         {renderSelectedPage()}
       </div>
     </div>

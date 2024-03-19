@@ -7,7 +7,7 @@ const Sidebar = ({ handleSideBarButtonClick }) => {
     handleSideBarButtonClick(option);
   };
   return (
-    <div className="w-fit xl:w-1/6 flex flex-col p-4 shadow-md bg-gradient-to-r from-red-200 via-mint-500 to-purple-300">
+    <div>
       <div className="flex flex-col items-start gap-y-6">
         <Button
           className="w-full mb-4 mt-20"
