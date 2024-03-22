@@ -74,7 +74,7 @@ export default function SignIn() {
             onChange={handleChange}
             />
           </div>
-          <Button gradientDuoTone="purpleToBlue" type='submit' disabled ={loading}>
+          <Button gradientDuoTone="purpleToBlue" outline type='submit' disabled ={loading}>
               {
                 loading ? (
                   <>
