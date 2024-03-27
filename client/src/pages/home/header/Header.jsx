@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
-import WeatherComponent from "./WeatherComponent";
-import Clock from "./Clock";
-import { AiOutlineSearch } from "react-icons/ai";
-import { TextInput, Button } from "flowbite-react";
+import React, { useEffect } from 'react';
+import WeatherComponent from './WeatherComponent';
+import Clock from './Clock';
+import { AiOutlineSearch } from 'react-icons/ai';
+import { TextInput, Button } from 'flowbite-react';
 
 export default function Header({ handleSelectChange, handleDateChange }) {
   return (
@@ -53,7 +53,7 @@ export default function Header({ handleSelectChange, handleDateChange }) {
           gradientDuoTone="purpleToBlue"
           outline
           text="MyAccount"
-          onClick={() => handleClick("MyAccount")}
+          onClick={() => handleClick('MyAccount')}
         >
           My Account
         </Button>

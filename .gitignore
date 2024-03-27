@@ -28,3 +28,4 @@ Dockerfile
 devcontainer.json
 docker-compose.yml
 dependabot.yml
+.prettierrc.json

@@ -1,6 +1,6 @@
 // Sidebar.js
-import { Button, Navbar } from "flowbite-react";
-import React from "react";
+import { Button, Navbar } from 'flowbite-react';
+import React from 'react';
 
 const Sidebar = ({ handleSideBarButtonClick }) => {
   const handleClick = (option) => {
@@ -14,7 +14,7 @@ const Sidebar = ({ handleSideBarButtonClick }) => {
           gradientDuoTone="purpleToBlue"
           outline
           text="Home"
-          onClick={() => handleClick("Home")}
+          onClick={() => handleClick('Home')}
         >
           Home
         </Button>
@@ -23,7 +23,7 @@ const Sidebar = ({ handleSideBarButtonClick }) => {
           gradientDuoTone="purpleToBlue"
           outline
           text="Unit File"
-          onClick={() => handleClick("UnitFile")}
+          onClick={() => handleClick('UnitFile')}
         >
           Unit File
         </Button>
@@ -32,7 +32,7 @@ const Sidebar = ({ handleSideBarButtonClick }) => {
           gradientDuoTone="purpleToBlue"
           outline
           text="Key Management"
-          onClick={() => handleClick("KeyManagement")}
+          onClick={() => handleClick('KeyManagement')}
         >
           Key Management
         </Button>
@@ -41,7 +41,7 @@ const Sidebar = ({ handleSideBarButtonClick }) => {
           gradientDuoTone="purpleToBlue"
           outline
           text="Pass On"
-          onClick={() => handleClick("PassOn")}
+          onClick={() => handleClick('PassOn')}
         >
           Pass On
         </Button>
