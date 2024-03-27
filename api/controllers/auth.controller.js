@@ -10,15 +10,21 @@ export const signup = async (req, res, next) =>{
     }
 
     const hashedPasssword = bcryptjs.hashSync(password, 10)
-    const newUser = new User({username, email, password: hashedPasssword})
+    const newUser = new User({
+        username, 
+        email, 
+        password: hashedPasssword,
+    });
 
     try{
         await newUser.save();
         res.json('SignUp successful')
     }
     catch(error){
+        if ( error && error.code === 11000 ) {
+            next(errorHandler(500,'User Already Exists'));
+          }
         next(error);
-
     }
 }
 
@@ -37,16 +43,16 @@ export const signin = async(req, res, next) =>{
         if(!validPassword){
             return next(errorHandler(404, 'Invalid Password'));
         }
-        const token = jwt.sign({id: validUser._id}, process.env.JWT_SECRET);
+        const token = jwt.sign({id: validUser._id}, process.env.JWT_SECRET, { expiresIn: '12h' });
 
         const {password: pass, ...rest } = validUser._doc;
 
         res
-        .status(200)
-        .cookie('access_token', token, {
+            .status(200)
+            .cookie('access_token', token, {
             httpOnly : true,
-        })
-        .json(rest);
+            })
+            .json(rest);
     }
     catch(error){
         next(error)

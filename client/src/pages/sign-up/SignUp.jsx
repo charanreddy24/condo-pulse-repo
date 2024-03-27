@@ -18,7 +18,7 @@ export default function SignUp() {
     }
     try{
       setLoading(true);
-      setErrorMessage(null)
+      setErrorMessage(null); // to clean any previous errors
       const res = await fetch('/api/auth/signup', {
         method : 'POST',
         headers : {'Content-Type': 'application/json'},
@@ -26,6 +26,7 @@ export default function SignUp() {
       })
       const data = await res.json();
       if(data.success === false){
+        setLoading(false);
         return setErrorMessage(data.message);
       }
       setLoading(false);
