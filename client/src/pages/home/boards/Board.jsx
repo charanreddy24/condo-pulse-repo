@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import { Button } from 'flowbite-react';
+import React, { useState } from "react";
+import { Button } from "flowbite-react";
 export default function Board({ selectedOption }) {
   const handleCreateClick = () => {
-    console.log('Create button clicked');
+    console.log("Create button clicked");
   };
 
   switch (selectedOption) {
-    case 'Service Request':
+    case "Service Request":
       return (
         <div className="flex gap-2 overflow-y-auto w-full h-full text-center">
           <BoardColumn title="Requests Created">
@@ -18,18 +18,18 @@ export default function Board({ selectedOption }) {
           <BoardColumn title="Actioned" />
         </div>
       );
-    case 'Incident Report':
+    case "Incident Report":
       return (
         <div className="flex gap-2 overflow-y-auto w-full h-full text-center">
           <BoardColumn title="Incident Report Created">
             <Button onClick={handleCreateClick}>
-              Create an Incident Report{' '}
+              Create an Incident Report{" "}
             </Button>
           </BoardColumn>
           <BoardColumn title="Actioned" />
         </div>
       );
-    case 'Parking Registration':
+    case "Parking Registration":
       return (
         <div className="flex gap-2 overflow-y-auto w-full h-full text-center ">
           <BoardColumn title="Active Day Permit">
@@ -47,7 +47,7 @@ export default function Board({ selectedOption }) {
 
 const BoardColumn = ({ title, children }) => {
   return (
-    <div className="bg-white flex-1 p-4 rounded shadow-sm flex flex-col overflow-y-auto w-full h-full ">
+    <div className="bg-white dark:bg-slate-800 flex-1 p-4 rounded shadow-sm flex flex-col overflow-y-auto w-full h-full ">
       <h2 className="mb-4 pb-2 border-b border-gray-300 text-center sm:text-sm">
         {title}
       </h2>
