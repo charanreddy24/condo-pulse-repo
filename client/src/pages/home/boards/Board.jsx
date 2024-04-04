@@ -47,7 +47,7 @@ export default function Board({ selectedOption }) {
 
 const BoardColumn = ({ title, children }) => {
   return (
-    <div className="bg-white dark:bg-slate-800 flex-1 p-4 rounded shadow-sm flex flex-col overflow-y-auto w-full h-full ">
+    <div className="bg-white dark:bg-slate-800 flex-1 p-4 rounded shadow-sm flex flex-col flex-grow overflow-y-auto">
       <h2 className="mb-4 pb-2 border-b border-gray-300 text-center sm:text-sm">
         {title}
       </h2>

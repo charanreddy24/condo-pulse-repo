@@ -65,7 +65,7 @@ const LandingPage = () => {
   };
 
   return (
-    <div className="flex bg-slate-200 h-dvh">
+    <div className="flex bg-slate-200 overflow-auto">
       <div
         className={`${showSidebar ? "block" : "hidden"} sm:h-dvh w-fit xl:w-1/6 flex flex-col p-4 shadow-md bg-gradient-to-r from-red-200 via-mint-500 to-purple-300`}
       >
