@@ -3,13 +3,27 @@ import WeatherComponent from "./WeatherComponent";
 import Clock from "./Clock";
 import { AiOutlineSearch } from "react-icons/ai";
 import { TextInput, Button } from "flowbite-react";
+import { FaBars } from "react-icons/fa";
 
-export default function Header({ handleSelectChange, handleDateChange }) {
+export function SidebarToggle({ handleSidebarToggle }) {
+  return (
+    <button
+      className="bg-transparent p-2 rounded-md text-gray-600 hover:text-gray-900 focus:outline-none focus:text-gray-900"
+      onClick={handleSidebarToggle}
+    >
+      <FaBars className="text-2xl mt-[-20px] mr-[-20px]" />
+    </button>
+  );
+}
+
+export default function Header({
+  handleSelectChange,
+  handleDateChange,
+  handleSidebarToggle,
+}) {
   return (
     <div className="px-4 py-2 w-full rounded-lg grid grid-cols-4 gap-4 bg-gradient-to-r from-red-200 via-mint-500 to-purple-200  ">
-      <div className="text-xs lg:text-sm text-center font-bold py-2 dark:text-slate-700">
-        <WeatherComponent />
-      </div>
+      <SidebarToggle handleSidebarToggle={handleSidebarToggle} />
 
       <div className="col-span-2">
         <form>
@@ -47,7 +61,9 @@ export default function Header({ handleSelectChange, handleDateChange }) {
           defaultValue={new Date().toISOString().slice(0, 10)}
         />
       </div>
-      <div className="flex justify-center"></div>
+      <div className="text-xs lg:text-sm text-center font-bold py-2 dark:text-slate-700">
+        <WeatherComponent />
+      </div>
     </div>
   );
 }

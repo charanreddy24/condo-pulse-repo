@@ -1,9 +1,9 @@
-import { Navbar, TextInput, Button, Dropdown, Avatar } from 'flowbite-react';
-import { Link, useLocation } from 'react-router-dom';
-import { AiOutlineSearch } from 'react-icons/ai';
-import { FaMoon, FaSun } from 'react-icons/fa';
-import { useSelector, useDispatch } from 'react-redux';
-import { toggleTheme } from '/src/redux/theme/themeSlice.js';
+import { Navbar, TextInput, Button, Dropdown, Avatar } from "flowbite-react";
+import { Link, useLocation } from "react-router-dom";
+import { AiOutlineSearch } from "react-icons/ai";
+import { FaMoon, FaSun } from "react-icons/fa";
+import { useSelector, useDispatch } from "react-redux";
+import { toggleTheme } from "/src/redux/theme/themeSlice.js";
 
 export default function NavbarHeader() {
   const path = useLocation().pathname;
@@ -33,12 +33,12 @@ export default function NavbarHeader() {
       </Button>
       <div className="flex gap-2 md:order-2">
         <Button
-          className="w-12 h-10 hidden sm:inline"
+          className="w-12 h-10"
           color="gray"
           pill
           onClick={() => dispatch(toggleTheme())}
         >
-          {theme === 'light' ? <FaSun /> : <FaMoon />}
+          {theme === "light" ? <FaSun /> : <FaMoon />}
         </Button>
         {currentUser ? (
           <Dropdown
@@ -54,7 +54,7 @@ export default function NavbarHeader() {
                 {currentUser.email}
               </span>
             </Dropdown.Header>
-            <Link to={'dashboard?tab=profile'}>
+            <Link to={"dashboard?tab=profile"}>
               <Dropdown.Item>Profile</Dropdown.Item>
             </Link>
             <Dropdown.Divider />
@@ -71,13 +71,13 @@ export default function NavbarHeader() {
         <Navbar.Toggle />
       </div>
       <Navbar.Collapse>
-        <Navbar.Link active={path.pathname === '/'} as={'div'}>
+        <Navbar.Link active={path.pathname === "/"} as={"div"}>
           <Link to="/">Home</Link>
         </Navbar.Link>
-        <Navbar.Link active={path.pathname === '/about'} as={'div'}>
+        <Navbar.Link active={path.pathname === "/about"} as={"div"}>
           <Link to="/about">About</Link>
         </Navbar.Link>
-        <Navbar.Link active={path.pathname === '/sign-up'} as={'div'}>
+        <Navbar.Link active={path.pathname === "/sign-up"} as={"div"}>
           <Link to="/sign-up">Sign Up</Link>
         </Navbar.Link>
       </Navbar.Collapse>
