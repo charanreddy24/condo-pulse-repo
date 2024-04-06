@@ -1,6 +1,6 @@
-import { Footer } from 'flowbite-react';
-import { Link, useLocation } from 'react-router-dom';
-import { BsFacebook, BsInstagram, BsTwitter } from 'react-icons/bs';
+import { Footer } from "flowbite-react";
+import { Link, useLocation } from "react-router-dom";
+import { BsFacebook, BsInstagram, BsTwitter } from "react-icons/bs";
 
 export default function FooterComponent() {
   return (
