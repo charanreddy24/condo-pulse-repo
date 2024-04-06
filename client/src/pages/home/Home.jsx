@@ -46,6 +46,8 @@ const LandingPage = () => {
           <MainBody
             selectedOption={selectedOption}
             selectedDate={selectedDate}
+            handleSelectChange={handleSelectChange}
+            handleDateChange={handleDateChange}
           />
         );
       case "UnitFile":
@@ -59,6 +61,8 @@ const LandingPage = () => {
           <MainBody
             selectedOption={selectedOption}
             selectedDate={selectedDate}
+            handleSelectChange={handleSelectChange}
+            handleDateChange={handleDateChange}
           />
         );
     }
@@ -76,11 +80,7 @@ const LandingPage = () => {
 
       <div className="h-dvh w-full flex flex-col p-2 gap-y-2 sm:flex-shrink-0 lg:flex-shrink">
         <div className="">
-          <Header
-            handleSelectChange={handleSelectChange}
-            handleDateChange={handleDateChange}
-            handleSidebarToggle={handleSidebarToggle}
-          />
+          <Header handleSidebarToggle={handleSidebarToggle} />
         </div>
         {renderSelectedPage()}
       </div>
