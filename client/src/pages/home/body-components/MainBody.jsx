@@ -1,5 +1,5 @@
-import React from 'react';
-import Board from '/src/pages/home/boards/Board';
+import React from "react";
+import Board from "/src/pages/home/boards/Board";
 
 export default function MainBody({ selectedOption, selectedPeriod }) {
   return (
