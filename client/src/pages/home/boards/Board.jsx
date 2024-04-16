@@ -1,30 +1,18 @@
 import React, { useState } from "react";
 import { Button } from "flowbite-react";
+import Modal from "/src/components/ReportForm.jsx";
+
 export default function Board({ selectedOption }) {
   const handleCreateClick = () => {
     console.log("Create button clicked");
   };
 
   switch (selectedOption) {
-    case "Service Request":
-      return (
-        <div className="flex gap-2 overflow-y-auto w-full h-full text-center">
-          <BoardColumn title="Requests Created">
-            <Button label="" onClick={handleCreateClick}>
-              Create a Service Request
-            </Button>
-          </BoardColumn>
-          <BoardColumn title="Service In Progress" />
-          <BoardColumn title="Actioned" />
-        </div>
-      );
     case "Incident Report":
       return (
         <div className="flex gap-2 overflow-y-auto w-full h-full text-center">
           <BoardColumn title="Incident Report Created">
-            <Button onClick={handleCreateClick}>
-              Create an Incident Report{" "}
-            </Button>
+            <Modal />
           </BoardColumn>
           <BoardColumn title="Actioned" />
         </div>
@@ -38,6 +26,16 @@ export default function Board({ selectedOption }) {
           <BoardColumn title="Active Night Permit">
             <Button onClick={handleCreateClick}> Issue Night Permit</Button>
           </BoardColumn>
+        </div>
+      );
+    case "Service Request":
+      return (
+        <div className="flex gap-2 overflow-y-auto w-full h-full text-center">
+          <BoardColumn title="Requests Created">
+            <Modal />
+          </BoardColumn>
+          <BoardColumn title="Service In Progress" />
+          <BoardColumn title="Actioned" />
         </div>
       );
     default:

@@ -8,7 +8,7 @@ import KeyManagement from "/src/pages/home/body-components/KeyManagement.jsx";
 import PassOn from "/src/pages/home/body-components/PassOn.jsx";
 
 const LandingPage = () => {
-  const [selectedOption, setSelectedOption] = useState("Service Request");
+  const [selectedOption, setSelectedOption] = useState("Incident Report");
   const [selectedDate, setSelectedDate] = useState();
   const [value, setValue] = useState(new Date().toISOString().slice(0, 10));
   const [sideBarSelectedOption, setSideBarSelectedOption] =
