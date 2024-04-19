@@ -1,19 +1,19 @@
 // Sidebar.js
-import { Button, Navbar } from "flowbite-react";
-import React from "react";
+import { Button, Navbar } from 'flowbite-react';
+import React from 'react';
 
 const Sidebar = ({ handleSideBarButtonClick }) => {
   const handleClick = (option) => {
     handleSideBarButtonClick(option);
   };
   return (
-    <div className="flex flex-col items-start gap-y-6">
+    <div className="flex flex-col items-start gap-y-6 overflow-auto">
       <Button
         className="w-full md:mb-4 md:mt-20 sm:mb-1 sm:mt-10"
         gradientDuoTone="purpleToBlue"
         outline
         text="Home"
-        onClick={() => handleClick("Home")}
+        onClick={() => handleClick('Home')}
       >
         Home
       </Button>
@@ -22,7 +22,7 @@ const Sidebar = ({ handleSideBarButtonClick }) => {
         gradientDuoTone="purpleToBlue"
         outline
         text="Unit File"
-        onClick={() => handleClick("UnitFile")}
+        onClick={() => handleClick('UnitFile')}
       >
         Unit File
       </Button>
@@ -31,7 +31,7 @@ const Sidebar = ({ handleSideBarButtonClick }) => {
         gradientDuoTone="purpleToBlue"
         outline
         text="Key Management"
-        onClick={() => handleClick("KeyManagement")}
+        onClick={() => handleClick('KeyManagement')}
       >
         Key Management
       </Button>
@@ -40,7 +40,7 @@ const Sidebar = ({ handleSideBarButtonClick }) => {
         gradientDuoTone="purpleToBlue"
         outline
         text="Pass On"
-        onClick={() => handleClick("PassOn")}
+        onClick={() => handleClick('PassOn')}
       >
         Pass On
       </Button>
