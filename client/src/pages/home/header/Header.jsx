@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
-import WeatherComponent from './WeatherComponent';
-import Clock from './Clock';
-import { AiOutlineSearch } from 'react-icons/ai';
-import { TextInput, Button } from 'flowbite-react';
-import { FaBars } from 'react-icons/fa';
+import React, { useEffect } from "react";
+import WeatherComponent from "./WeatherComponent";
+import Clock from "./Clock";
+import { AiOutlineSearch } from "react-icons/ai";
+import { TextInput, Button } from "flowbite-react";
+import { FaBars } from "react-icons/fa";
 
 export function SidebarToggle({ handleSidebarToggle }) {
   return (
@@ -16,7 +16,11 @@ export function SidebarToggle({ handleSidebarToggle }) {
   );
 }
 
-export default function Header({ handleSidebarToggle }) {
+export default function Header({
+  handleSelectChange,
+  handleDateChange,
+  handleSidebarToggle,
+}) {
   return (
     // <div className="px-4 py-2 w-full rounded-lg grid grid-cols-4 gap-4 bg-gradient-to-r from-red-200 via-mint-500 to-purple-200  ">
     <div className="px-4 py-2 w-full rounded-lg flex gap-4 bg-gradient-to-r from-red-200 via-mint-500 to-purple-200  ">
