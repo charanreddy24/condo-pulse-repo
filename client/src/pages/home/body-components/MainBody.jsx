@@ -1,5 +1,7 @@
-import React from "react";
-import Board from "/src/pages/home/boards/Board";
+import React, { useState } from 'react';
+import IncidentReportBoard from '/src/pages/home/boards/IncidentReportBoard.jsx';
+import ParkingReportBoard from '/src/pages/home/boards/ParkingReportBoard.jsx';
+import ServiceRequestBoard from '/src/pages/home/boards/ServiceRequestBoard.jsx';
 
 export default function MainBody({
   selectedOption,
@@ -7,6 +9,7 @@ export default function MainBody({
   handleSelectChange,
   handleDateChange,
 }) {
+  const [cardsArray, setCardsArray] = useState([]);
   return (
     <>
       <div className="flex gap-4 justify-center">
@@ -30,7 +33,25 @@ export default function MainBody({
           />
         </div>
       </div>
-      <Board selectedOption={selectedOption} selectedPeriod={selectedPeriod} />
+      {selectedOption === 'Incident Report' ? (
+        <IncidentReportBoard
+          selectedPeriod={selectedPeriod}
+          cardsArray={cardsArray}
+          setCardsArray={setCardsArray}
+        />
+      ) : selectedOption === 'Parking Registration' ? (
+        <ParkingReportBoard
+          selectedPeriod={selectedPeriod}
+          cardsArray={cardsArray}
+          setCardsArray={setCardsArray}
+        />
+      ) : (
+        <ServiceRequestBoard
+          selectedPeriod={selectedPeriod}
+          cardsArray={cardsArray}
+          setCardsArray={setCardsArray}
+        />
+      )}
     </>
   );
 }
