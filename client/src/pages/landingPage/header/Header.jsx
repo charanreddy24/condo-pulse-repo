@@ -1,9 +1,9 @@
-import React, { useEffect } from "react";
-import WeatherComponent from "./WeatherComponent";
-import Clock from "./Clock";
-import { AiOutlineSearch } from "react-icons/ai";
-import { TextInput, Button } from "flowbite-react";
-import { FaBars } from "react-icons/fa";
+import React, { useEffect } from 'react';
+import WeatherComponent from './WeatherComponent';
+import Clock from './Clock';
+import { AiOutlineSearch } from 'react-icons/ai';
+import { TextInput, Button } from 'flowbite-react';
+import { FaBars } from 'react-icons/fa';
 
 export function SidebarToggle({ handleSidebarToggle }) {
   return (

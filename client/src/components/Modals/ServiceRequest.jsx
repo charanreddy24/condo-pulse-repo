@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from 'react';
 import Draggable from 'react-draggable';
-import { torontoTimeOptions } from '../../pages/home/header/Clock.jsx';
+import { torontoTimeOptions } from '../../pages/landingPage/header/Clock.jsx';
 import { FaTimes } from 'react-icons/fa';
 import { Label, Checkbox, Textarea, FileInput } from 'flowbite-react';
 import { useSelector, useDispatch } from 'react-redux';

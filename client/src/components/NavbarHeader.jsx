@@ -37,14 +37,7 @@ export default function NavbarHeader() {
           HD Protective Services
         </span>
       </Link>
-      <form>
-        <TextInput
-          type="text"
-          placeholder="Search"
-          rightIcon={AiOutlineSearch}
-          className="hidden lg:inline"
-        />
-      </form>
+
       <Button className="w-12 h-10 lg:hidden" color="gray" pill>
         <AiOutlineSearch />
       </Button>
@@ -88,15 +81,25 @@ export default function NavbarHeader() {
         <Navbar.Toggle />
       </div>
       <Navbar.Collapse>
-        <Navbar.Link active={path.pathname === '/'} as={'div'}>
-          <Link to="/">Home</Link>
-        </Navbar.Link>
-        <Navbar.Link active={path.pathname === '/about'} as={'div'}>
-          <Link to="/about">About</Link>
-        </Navbar.Link>
-        <Navbar.Link active={path.pathname === '/sign-up'} as={'div'}>
-          <Link to="/sign-up">Sign Up</Link>
-        </Navbar.Link>
+        {currentUser ? (
+          <Navbar.Link active={path.pathname === '/'} as={'div'}>
+            <Link to="/">Home</Link>
+          </Navbar.Link>
+        ) : (
+          <Navbar.Link active={path.pathname === '/'} as={'div'}>
+            <Link to="/home">Home</Link>
+          </Navbar.Link>
+        )}
+        {currentUser ? null : (
+          <Navbar.Link active={path.pathname === '/about'} as={'div'}>
+            <Link to="/about">About</Link>
+          </Navbar.Link>
+        )}
+        {currentUser ? null : (
+          <Navbar.Link active={path.pathname === '/sign-up'} as={'div'}>
+            <Link to="/sign-up">Sign Up</Link>
+          </Navbar.Link>
+        )}
       </Navbar.Collapse>
     </Navbar>
   );

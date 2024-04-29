@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import IncidentReportBoard from '/src/pages/home/boards/IncidentReportBoard.jsx';
-import ParkingReportBoard from '/src/pages/home/boards/ParkingReportBoard.jsx';
-import ServiceRequestBoard from '/src/pages/home/boards/ServiceRequestBoard.jsx';
+import IncidentReportBoard from '/src/pages/landingPage/boards/IncidentReportBoard.jsx';
+import ParkingReportBoard from '/src/pages/landingPage/boards/ParkingReportBoard.jsx';
+import ServiceRequestBoard from '/src/pages/landingPage/boards/ServiceRequestBoard.jsx';
 
 export default function MainBody({
   selectedOption,
