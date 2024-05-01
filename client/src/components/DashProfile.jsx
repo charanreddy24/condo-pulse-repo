@@ -212,7 +212,7 @@ export default function DashProfile() {
           outline
           disabled={loading || imageFileUploading}
         >
-          {loading ? 'Loading...' : Update}
+          {loading ? 'Loading...' : 'Update'}
         </Button>
       </form>
       <div className="text-red-500 flex justify-center mt-5">
