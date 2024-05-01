@@ -1,8 +1,9 @@
 import { useRef, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Draggable from 'react-draggable';
 import { torontoTimeOptions } from '../../pages/landingPage/header/Clock.jsx';
 import { FaTimes } from 'react-icons/fa';
-import { Label, Checkbox, Textarea, FileInput } from 'flowbite-react';
+import { Label, Checkbox, Textarea, FileInput, Alert } from 'flowbite-react';
 import { useSelector, useDispatch } from 'react-redux';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
@@ -14,7 +15,9 @@ export default function IncidentReportModal({ cardsArray, setCardsArray }) {
   const [value, setValue] = useState(new Date().toISOString().slice(0, 10));
   const [descriptionValue, setDescriptionValue] = useState('');
   const [loggedOnDate, setLoggedOnDate] = useState(new Date());
+  const [publishError, setPublishError] = useState(null);
   const { currentUser } = useSelector((state) => state.user);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (showModal) {
@@ -60,7 +63,14 @@ export default function IncidentReportModal({ cardsArray, setCardsArray }) {
     setSelectedDate(formattedDate);
     setValue(e.target.value);
   };
-  const handleSaveChanges = (e) => {
+
+  const handleFileInputChange = (e) => {
+    const files = e.target.files;
+    setFormData({ ...formData, files: files });
+  };
+
+  const handleSaveChanges = async (e) => {
+    e.preventDefault();
     if (
       !formData.title ||
       !formData.incidentType ||
@@ -69,11 +79,29 @@ export default function IncidentReportModal({ cardsArray, setCardsArray }) {
     ) {
       return alert(JSON.stringify('Please fill out all the fields'));
     }
-    const card = { ...formData };
-    console.log('New card:', card);
-    setCardsArray([...cardsArray, card]);
-    setFormData({ ...initialFormData });
-    setShowModal(false);
+    try {
+      const card = { ...formData };
+      console.log('New card:', card);
+      setCardsArray([...cardsArray, card]);
+      setFormData({ ...initialFormData });
+      setShowModal(false);
+      const res = await fetch('/api/incidentReport/create', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setPublishError(data.message);
+        return;
+      }
+      if (res.ok) {
+        setPublishError(null);
+        navigate(`/post/${data.slug}`);
+      }
+    } catch (error) {
+      setPublishError('Something went wrong');
+    }
   };
   return (
     <>
@@ -183,6 +211,7 @@ export default function IncidentReportModal({ cardsArray, setCardsArray }) {
                             className="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 px-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             id="multiple-file-upload"
                             multiple
+                            onChange={handleFileInputChange}
                           />
                         </div>
                       </div>
@@ -209,6 +238,11 @@ export default function IncidentReportModal({ cardsArray, setCardsArray }) {
                     >
                       Save Changes
                     </button>
+                    {/* {publishError && (
+                      <Alert color="failure" className="mt-5">
+                        {publishError}
+                      </Alert>
+                    )} */}
                   </div>
                 </div>
               </div>

@@ -10,10 +10,21 @@ const incidentReportSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    files: {
+    loggedDate: {
       type: String,
       default: '',
     },
+    loggedBy: {
+      type: String,
+      default: '',
+    },
+    files: [
+      {
+        filename: String,
+        contentType: String,
+        data: Buffer,
+      },
+    ],
     incidentType: {
       type: String,
       default: 'Trespassers',
@@ -24,6 +35,14 @@ const incidentReportSchema = new mongoose.Schema(
     description: {
       type: String,
       required: true,
+    },
+    column: {
+      type: String,
+      default: 'Incident Report Created',
+    },
+    id: {
+      type: String,
+      default: '',
     },
     slug: {
       type: String,
