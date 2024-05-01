@@ -163,7 +163,7 @@ export default function IncidentReportModal({ cardsArray, setCardsArray }) {
                         <div className="mb-12">
                           <strong className="mr-2">Description:</strong>
                           <ReactQuill
-                            className=" h-40 w-full"
+                            className=" h-56 w-full"
                             type="text"
                             name="description"
                             required
