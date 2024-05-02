@@ -4,7 +4,7 @@ import Sidebar from '/src/pages/landingPage/sidebar/Sidebar.jsx';
 import Header from '/src/pages/landingPage/header/Header.jsx';
 import MainBody from '/src/pages/landingPage/body-components/MainBody.jsx';
 import UnitFile from '/src/pages/landingPage/body-components/UnitFile.jsx';
-import KeyManagement from '/src/pages/landingPage/body-components/KeyManagement.jsx';
+import ShiftLog from '/src/pages/landingPage/body-components/ShiftLog.jsx';
 import PassOn from '/src/pages/landingPage/body-components/PassOn.jsx';
 
 const LandingPage = () => {
@@ -52,8 +52,8 @@ const LandingPage = () => {
         );
       case 'UnitFile':
         return <UnitFile />;
-      case 'KeyManagement':
-        return <KeyManagement />;
+      case 'ShiftLog':
+        return <ShiftLog />;
       case 'PassOn':
         return <PassOn />;
       default:
