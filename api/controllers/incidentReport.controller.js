@@ -15,22 +15,24 @@ export const create = async (req, res, next) => {
       }
     }
     const slug = generateSlug(req.body.title);
+    const files = [];
     const incidentReportData = {
       ...req.body,
       slug,
       userId: req.user.id,
+      files: files,
     };
 
     if (req.files && req.files.length > 0) {
-      incidentReportData.files = req.files.map((file) => ({
-        filename: file.originalname,
-        contentType: file.mimetype,
-        data: file.buffer,
-      }));
-    } else {
-      // If no files were uploaded, set files to an empty array
-      incidentReportData.files = [];
+      req.files.forEach((file) => {
+        files.push({
+          filename: file.originalname,
+          contentType: file.mimetype,
+          data: file.buffer,
+        });
+      });
     }
+
     const newIncidentReport = new IncidentReport(incidentReportData);
     const savedIncidentReport = await newIncidentReport.save();
 
@@ -70,6 +72,7 @@ export const getIncidentReports = async (req, res, next) => {
         ],
       }),
     })
+      .populate('files')
       .sort({ updatedAt: sortDirection })
       .skip(startIndex)
       .limit(limit);
