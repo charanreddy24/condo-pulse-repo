@@ -1,7 +1,25 @@
 import IncidentReport from '../models/incidentReport.model.js';
 import errorHandler from '../utils/error.js';
+import { PutObjectCommand } from '@aws-sdk/client-s3';
+import { s3 } from '../routes/incidentReport.route.js';
 
 export const create = async (req, res, next) => {
+  req.files.buffer;
+
+  const awsBucketName = process.env.AWS_BUCKET_NAME;
+
+  for (const file of req.files) {
+    const params = {
+      Bucket: awsBucketName,
+      Key: file.originalname,
+      Body: file.buffer,
+      ContentType: file.mimetype,
+    };
+
+    const command = new PutObjectCommand(params);
+
+    await s3.send(command);
+  }
   try {
     const requiredFields = [
       'title',
