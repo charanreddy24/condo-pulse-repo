@@ -1,7 +1,8 @@
 import IncidentReport from '../models/incidentReport.model.js';
 import errorHandler from '../utils/error.js';
-import { PutObjectCommand } from '@aws-sdk/client-s3';
+import { PutObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3';
 import { s3 } from '../routes/incidentReport.route.js';
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 
 export const create = async (req, res, next) => {
   req.files.buffer;
@@ -47,6 +48,7 @@ export const create = async (req, res, next) => {
           filename: file.originalname,
           contentType: file.mimetype,
           data: file.buffer,
+          fileUrl: '',
         });
       });
     }
@@ -73,6 +75,7 @@ const generateSlug = (title) => {
 };
 
 export const getIncidentReports = async (req, res, next) => {
+  const awsBucketName = process.env.AWS_BUCKET_NAME;
   try {
     const startIndex = parseInt(req.query.startIndex) || 0;
     const limit = parseInt(req.query.limit) || 9;
@@ -94,6 +97,26 @@ export const getIncidentReports = async (req, res, next) => {
       .sort({ updatedAt: sortDirection })
       .skip(startIndex)
       .limit(limit);
+
+    for (const incidentReport of incidentReports) {
+      const fileUrls = [];
+      for (const file of incidentReport.files) {
+        const getObjectParams = {
+          Bucket: awsBucketName,
+          Key: file.filename,
+        };
+        const command = new GetObjectCommand(getObjectParams);
+        try {
+          const url = await getSignedUrl(s3, command, { expiresIn: 3600 });
+          fileUrls.push(url);
+        } catch (error) {
+          next(error);
+        }
+      }
+      incidentReport.files.forEach((file, index) => {
+        file.fileUrl = fileUrls[index];
+      });
+    }
 
     const totalIncidentReports = await IncidentReport.countDocuments();
     const now = new Date();

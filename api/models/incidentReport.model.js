@@ -23,6 +23,7 @@ const incidentReportSchema = new mongoose.Schema(
         filename: String,
         contentType: String,
         data: Buffer,
+        fileUrl: [],
       },
     ],
     incidentType: {

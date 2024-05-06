@@ -45,17 +45,16 @@ export default function DashIncidentReports() {
                   {new Date(incidentReport.updatedAt).toLocaleDateString()}
                 </Table.Cell>
                 <Table.Cell>
-                  {incidentReport.files.map((file, index) => (
-                    <a
-                      key={index}
-                      href={`data:${
-                        file.contentType
-                      };base64,${file.data.toString('base64')}`}
-                      download={file.filename}
-                    >
-                      {file.filename}
-                    </a>
-                  ))}
+                  {incidentReport.files &&
+                    incidentReport.files.map((file, index) => (
+                      <a
+                        key={index}
+                        href={file.fileUrl}
+                        download={file.filename}
+                      >
+                        {file.filename}
+                      </a>
+                    ))}
                 </Table.Cell>
                 <Table.Cell>
                   <Link
