@@ -199,7 +199,7 @@ const Card = ({
   handleDragStart,
   incidentType,
   loggedBy,
-  incidentDate,
+  loggedDate,
   slug,
   description,
 }) => {
@@ -217,13 +217,21 @@ const Card = ({
           className="font-medium text-gray-900 dark:text-white"
           to={`/incidentReport/${slug}`}
         >
-          <h3 className="font-medium border-b-2">{title}</h3>
-          <div className="flex items-center justify-between gap-1 text-sm text-black font-medium">
+          <h3 className="font-medium border-solid border-b-2 inline-block border-violet-300">
+            {title}
+          </h3>
+          <div className="flex justify-end p-1">
+            <p className="border border-violet-300 rounded-lg inline-block text-xs text-fuchsia-800 p-1">
+              Status: {column}
+            </p>
+          </div>
+
+          <div className="flex items-center justify-between gap-1 text-sm text-black font-medium p-1">
             <p className="">Logged by: {loggedBy}</p>
             <p className="">Type of Incident: {incidentType}</p>
           </div>
-          <div className="text-sm text-black">
-            <p className="">Date: {incidentDate}</p>
+          <div className="text-sm text-black p-1">
+            <p className="">Logged on Date: {loggedDate}</p>
           </div>
         </Link>
       </motion.div>
