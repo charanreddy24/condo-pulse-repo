@@ -3,6 +3,7 @@ import { Button } from 'flowbite-react';
 import { FiPlus } from 'react-icons/fi';
 import { motion } from 'framer-motion';
 import IncidentReportModal from '/src/components/Modals/IncidentReport.jsx';
+import { Link } from 'react-router-dom';
 
 export default function incidentReportBoard({
   selectedPeriod,
@@ -48,6 +49,11 @@ const Column = ({
   setCardsArray,
 }) => {
   const [active, setActive] = useState(false);
+  const [newColumn, setNewColumn] = useState('');
+
+  useEffect(() => {
+    setNewColumn(column);
+  }, [column]);
 
   const handleDragStart = (e, card) => {
     e.dataTransfer.setData('cardId', card.id);
@@ -116,11 +122,23 @@ const Column = ({
       let cardToTransfer = copy.find((c) => c.id === cardId);
 
       if (!cardToTransfer) return;
-
+      setNewColumn(column);
       cardToTransfer = {
         ...cardToTransfer,
         column,
       };
+      fetch(
+        `/api/incidentReport/updateIncidentReportColumn/${cardToTransfer._id}`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ newColumn }),
+        },
+      ).catch((error) => {
+        console.error('Error updating column for card:', cardId, error);
+      });
 
       copy = copy.filter((c) => c.id !== cardId);
 
@@ -182,6 +200,7 @@ const Card = ({
   incidentType,
   loggedBy,
   incidentDate,
+  slug,
   description,
 }) => {
   return (
@@ -191,17 +210,22 @@ const Card = ({
         layout
         layoutId={id}
         draggable="true"
-        onDragStart={(e) => handleDragStart(e, { title, id, column })}
+        onDragStart={(e) => handleDragStart(e, { title, id, column, slug })}
         className="cursor-grab border  rounded bg-gradient-to-r from-red-200 via-mint-500 to-purple-200 outline outline-1 outline-gray-300 p-3 active:cursor-grabbing"
       >
-        <h3 className="font-medium ">{title}</h3>
-        <div className="flex items-center justify-between gap-1 text-sm text-black font-medium">
-          <p className="">Logged by: {loggedBy}</p>
-          <p className="">Type of Incident: {incidentType}</p>
-        </div>
-        <div className="text-sm text-black">
-          <p className="">Date: {incidentDate}</p>
-        </div>
+        <Link
+          className="font-medium text-gray-900 dark:text-white"
+          to={`/incidentReport/${slug}`}
+        >
+          <h3 className="font-medium border-b-2">{title}</h3>
+          <div className="flex items-center justify-between gap-1 text-sm text-black font-medium">
+            <p className="">Logged by: {loggedBy}</p>
+            <p className="">Type of Incident: {incidentType}</p>
+          </div>
+          <div className="text-sm text-black">
+            <p className="">Date: {incidentDate}</p>
+          </div>
+        </Link>
       </motion.div>
       <DropIndicator beforeId={id} column={column} />
     </>

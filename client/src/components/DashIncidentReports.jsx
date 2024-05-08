@@ -6,7 +6,6 @@ import { Link } from 'react-router-dom';
 export default function DashIncidentReports() {
   const { currentUser } = useSelector((state) => state.user);
   const [userIncidentReports, setUserIncidentReports] = useState([]);
-  console.log(userIncidentReports);
   useEffect(() => {
     const fetchIncidentReports = async () => {
       try {
@@ -32,6 +31,7 @@ export default function DashIncidentReports() {
             <Table.HeadCell>Date Updated</Table.HeadCell>
             <Table.HeadCell>Files</Table.HeadCell>
             <Table.HeadCell>Title</Table.HeadCell>
+            <Table.HeadCell>Status</Table.HeadCell>
             <Table.HeadCell>Incident Type</Table.HeadCell>
             <Table.HeadCell>Logged By</Table.HeadCell>
             <Table.HeadCell>
@@ -44,7 +44,7 @@ export default function DashIncidentReports() {
                 <Table.Cell>
                   {new Date(incidentReport.updatedAt).toLocaleDateString()}
                 </Table.Cell>
-                <Table.Cell>
+                <Table.Cell className="flex flex-col gap-4">
                   {incidentReport.files &&
                     incidentReport.files.map((file, index) => (
                       <a
@@ -62,6 +62,14 @@ export default function DashIncidentReports() {
                     to={`/incidentReport/${incidentReport.slug}`}
                   >
                     {incidentReport.title}
+                  </Link>
+                </Table.Cell>
+                <Table.Cell>
+                  <Link
+                    className="font-medium text-gray-900 dark:text-white"
+                    to={`/incidentReport/${incidentReport.slug}`}
+                  >
+                    {incidentReport.column}
                   </Link>
                 </Table.Cell>
                 <Table.Cell>

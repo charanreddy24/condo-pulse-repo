@@ -44,6 +44,22 @@ export default function IncidentReportModal({ cardsArray, setCardsArray }) {
   };
 
   useEffect(() => {
+    const fetchIncidentReports = async () => {
+      try {
+        const res = await fetch('/api/incidentReport/getIncidentReports');
+        const data = await res.json();
+        if (res.ok) {
+          setCardsArray(data.incidentReports);
+        }
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+
+    fetchIncidentReports();
+  }, [currentUser]);
+
+  useEffect(() => {
     if (showModal) {
       document.body.style.overflow = 'hidden';
     } else {
@@ -92,9 +108,6 @@ export default function IncidentReportModal({ cardsArray, setCardsArray }) {
     const config = { headers: { 'Content-Type': 'multipart/form-data' } };
 
     try {
-      const card = { ...formData };
-      console.log('New card:', card);
-      setCardsArray([...cardsArray, card]);
       setFormData({ ...initialFormData });
       setShowModal(false);
 

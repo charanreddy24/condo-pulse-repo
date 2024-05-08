@@ -139,3 +139,20 @@ export const getIncidentReports = async (req, res, next) => {
     next(error);
   }
 };
+
+export const updateIncidentReportColumn = async (req, res, next) => {
+  try {
+    const updatedIncidentReportColumn = await IncidentReport.findByIdAndUpdate(
+      req.params.cardId,
+      {
+        $set: {
+          column: req.body.newColumn,
+        },
+      },
+      { new: true },
+    );
+    res.status(200).json(updatedIncidentReportColumn);
+  } catch (error) {
+    next(error);
+  }
+};

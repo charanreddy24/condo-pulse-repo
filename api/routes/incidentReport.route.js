@@ -3,6 +3,7 @@ import { verifyToken } from '../utils/verifyUser.js';
 import {
   create,
   getIncidentReports,
+  updateIncidentReportColumn,
 } from '../controllers/incidentReport.controller.js';
 import multer from 'multer';
 import { S3Client } from '@aws-sdk/client-s3';
@@ -27,5 +28,6 @@ const upload = multer({ storage: storage });
 
 router.post('/create', upload.array('files', 50), verifyToken, create);
 router.get('/getIncidentReports', getIncidentReports);
+router.put('/updateIncidentReportColumn/:cardId', updateIncidentReportColumn);
 
 export default router;
