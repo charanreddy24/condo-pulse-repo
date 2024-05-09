@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import TimePickerDropdown from '/src/components/TimePicker.jsx';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
@@ -33,6 +33,24 @@ export default function ShiftLog() {
   const [logs, setLogs] = useState([]);
   const [topForm, setTopForm] = useState(true);
   const [bottomForm, setBottomForm] = useState(false);
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const res = await fetch('/api/user/getUsers');
+        const data = await res.json();
+        if (res.ok) {
+          const { usersList } = data;
+          const usersName = usersList.map((user) => user.username);
+          setUsers(usersName); // Set the users array in the state
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchUsers();
+  }, []);
 
   const handleTopDivSave = (e) => {
     e.preventDefault();
@@ -101,11 +119,19 @@ export default function ShiftLog() {
               <div className="flex flex-col">
                 <div className="flex items-center">
                   <strong>Relieved:</strong>
-                  <select className="w-full ml-2 bg-gray-50 border text-center border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></select>
+                  <select className="w-full ml-2 bg-gray-50 border text-center border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    {users.map((user, index) => (
+                      <option value={user}>{user}</option>
+                    ))}
+                  </select>
                 </div>
                 <div className="flex items-center">
                   <strong>To be Relieved By:</strong>
-                  <select className="w-full ml-2 bg-gray-50 border text-center border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></select>
+                  <select className="w-full ml-2 bg-gray-50 border text-center border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    {users.map((user, index) => (
+                      <option value={user}>{user}</option>
+                    ))}
+                  </select>
                 </div>
               </div>
             </div>
