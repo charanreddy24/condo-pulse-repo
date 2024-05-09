@@ -133,7 +133,7 @@ export default function IncidentReportModal({ cardsArray, setCardsArray }) {
   return (
     <>
       <button
-        className="bg-violet-300 hover:bg-violet-400 active:bg-violet-500 font-bold text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+        className="bg-violet-300 hover:bg-violet-400 active:bg-violet-500 font-bold text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-8 ease-linear transition-all duration-150"
         type="button"
         onClick={() => setShowModal(true)}
       >

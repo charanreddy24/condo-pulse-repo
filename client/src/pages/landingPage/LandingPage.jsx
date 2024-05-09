@@ -78,10 +78,8 @@ const LandingPage = () => {
         <Sidebar handleSideBarButtonClick={handleSideBarButtonClick} />
       </div>
 
-      <div className="h-dvh w-full flex flex-col p-2 gap-y-2 sm:flex-shrink-0 lg:flex-shrink">
-        <div className="">
-          <Header handleSidebarToggle={handleSidebarToggle} />
-        </div>
+      <div className="h-dvh w-full flex flex-col p-2 gap-y-2 shrink-0 lg:flex-shrink">
+        <Header handleSidebarToggle={handleSidebarToggle} />
         {renderSelectedPage()}
       </div>
     </div>

@@ -23,7 +23,7 @@ export default function Header({
 }) {
   return (
     // <div className="px-4 py-2 w-full rounded-lg grid grid-cols-4 gap-4 bg-gradient-to-r from-red-200 via-mint-500 to-purple-200  ">
-    <div className="px-4 py-2 w-full rounded-lg flex gap-4 bg-gradient-to-r from-red-200 via-mint-500 to-purple-200  ">
+    <div className="px-4 py-2 w-full rounded-lg flex gap-4 bg-gradient-to-r from-red-200 via-mint-500 to-purple-200 md:flex-grow sm:shrink-0 ">
       <SidebarToggle
         classname="w-14"
         handleSidebarToggle={handleSidebarToggle}
