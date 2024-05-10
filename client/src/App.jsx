@@ -10,6 +10,7 @@ import FooterComponent from '/src/components/FooterComponent.jsx';
 import PrivateRoute from '/src/components/PrivateRoute.jsx';
 import LandingPage from './pages/landingPage/LandingPage.jsx';
 import { useSelector } from 'react-redux';
+import ViewIncidentReportModal from './components/Modals/ViewIncidentReportModal.jsx';
 
 export default function App() {
   const { currentUser } = useSelector((state) => state.user);
@@ -22,6 +23,10 @@ export default function App() {
         <Route element={<PrivateRoute />}>
           <Route path="/" element={<LandingPage />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route
+            path="/view-incidentReport/:incidentReportId"
+            element={<ViewIncidentReportModal />}
+          />
         </Route>
         <Route
           path="/sign-in"

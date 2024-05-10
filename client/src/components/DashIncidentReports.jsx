@@ -109,9 +109,9 @@ export default function DashIncidentReports() {
                   <Table.Cell>
                     <Link
                       className="text-teal-500 hover:underline"
-                      to={`/update-incidentReport/${incidentReport._id}`}
+                      to={`/view-incidentReport/${incidentReport._id}`}
                     >
-                      <span>Edit</span>
+                      <span>View</span>
                     </Link>
                   </Table.Cell>
                 </Table.Row>

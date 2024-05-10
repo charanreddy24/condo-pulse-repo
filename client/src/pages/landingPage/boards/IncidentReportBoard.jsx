@@ -202,6 +202,7 @@ const Card = ({
   loggedDate,
   slug,
   description,
+  _id,
 }) => {
   return (
     <>
@@ -215,7 +216,7 @@ const Card = ({
       >
         <Link
           className="font-medium text-gray-900 dark:text-white"
-          to={`/incidentReport/${slug}`}
+          to={`/view-incidentReport/${_id}`}
         >
           <h3 className="font-medium border-solid border-b-2 inline-block border-violet-300">
             {title}
