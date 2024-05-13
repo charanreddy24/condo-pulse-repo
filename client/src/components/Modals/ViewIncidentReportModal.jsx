@@ -159,18 +159,12 @@ export default function ViewIncidentReportModal() {
                       <div className="col-span-2">
                         <div className="mb-12">
                           <strong className="mr-2">Description:</strong>
-                          <ReactQuill
-                            className=" h-56 w-full"
-                            type="text"
-                            name="description"
-                            required
-                            theme="snow"
-                            value={formData.description}
-                            onChange={(value) =>
-                              setFormData({ ...formData, description: value })
-                            }
-                            readOnly={true}
-                          />
+                          <div
+                            className="p-3 max-w-4xl mx-auto w-full incidentReport-content"
+                            dangerouslySetInnerHTML={{
+                              __html: formData && formData.description,
+                            }}
+                          ></div>
                         </div>
                       </div>
                       <div className="col-span-2">

@@ -17,7 +17,7 @@ export default function incidentReportBoard({
     setTimeout(() => {
       setCards(cardsArray);
       setLoading(false);
-    }, 1200);
+    }, 1000);
   }, [cardsArray]);
 
   return (
