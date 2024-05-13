@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button } from 'flowbite-react';
+import { Button, Spinner } from 'flowbite-react';
 import { FiPlus } from 'react-icons/fi';
 import { motion } from 'framer-motion';
 import IncidentReportModal from '/src/components/Modals/IncidentReport.jsx';
@@ -11,8 +11,13 @@ export default function incidentReportBoard({
   setCardsArray,
 }) {
   const [cards, setCards] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    setCards(cardsArray);
+    setTimeout(() => {
+      setCards(cardsArray);
+      setLoading(false);
+    }, 1200);
   }, [cardsArray]);
 
   return (
@@ -25,6 +30,8 @@ export default function incidentReportBoard({
         setCards={setCards}
         cardsArray={cardsArray}
         setCardsArray={setCardsArray}
+        loading={loading}
+        setLoading={setLoading}
       />
       <Column
         title="Actioned"
@@ -34,6 +41,8 @@ export default function incidentReportBoard({
         setCards={setCards}
         cardsArray={cardsArray}
         setCardsArray={setCardsArray}
+        loading={loading}
+        setLoading={setLoading}
       />
     </div>
   );
@@ -47,6 +56,8 @@ const Column = ({
   setCards,
   cardsArray,
   setCardsArray,
+  loading,
+  setLoading,
 }) => {
   const [active, setActive] = useState(false);
   const [newColumn, setNewColumn] = useState('');
@@ -163,9 +174,15 @@ const Column = ({
         <h2 className={'mb-4 pb-2 border-b border-gray-300 text-center '}>
           {title}
         </h2>
-        <span className="bg-lime-500 text-white px-2 py-1 mt-[-23px] rounded ">
-          {filteredCards.length}
-        </span>
+        {loading ? (
+          <div className="bg-lime-500 text-white px-2 py-1 mt-[-23px] rounded ">
+            <Spinner size="sm"></Spinner>
+          </div>
+        ) : (
+          <span className="bg-lime-500 text-white px-2 py-1 mt-[-23px] rounded ">
+            {filteredCards.length}
+          </span>
+        )}
       </div>
       {title === 'Incident Report Created' && (
         <IncidentReportModal
@@ -173,21 +190,26 @@ const Column = ({
           setCardsArray={setCardsArray}
         />
       )}
-
-      <div
-        onDragOver={handleDragOver}
-        onDragLeave={handleDragLeave}
-        onDrop={handleDragEnd}
-        className={`h-full w-full transition-colors ${
-          active ? 'bg-lime-50' : 'bg-neutral-800/0'
-        }`}
-      >
-        {filteredCards.map((c) => {
-          return <Card key={c.id} {...c} handleDragStart={handleDragStart} />;
-        })}
-        <DropIndicator beforeId="-1" column={column} />
-        {/* <AddCard column={column} setCards={setCards} /> */}
-      </div>
+      {loading ? (
+        <div className="flex justify-center items-center">
+          <Spinner size="xl"></Spinner>
+        </div>
+      ) : (
+        <div
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+          onDrop={handleDragEnd}
+          className={`h-full w-full transition-colors ${
+            active ? 'bg-lime-50' : 'bg-neutral-800/0'
+          }`}
+        >
+          {filteredCards.map((c) => {
+            return <Card key={c.id} {...c} handleDragStart={handleDragStart} />;
+          })}
+          <DropIndicator beforeId="-1" column={column} />
+          {/* <AddCard column={column} setCards={setCards} /> */}
+        </div>
+      )}
     </div>
   );
 };

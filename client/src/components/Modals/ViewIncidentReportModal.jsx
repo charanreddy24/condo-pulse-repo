@@ -3,7 +3,14 @@ import { useNavigate, useParams } from 'react-router-dom';
 import Draggable from 'react-draggable';
 import { torontoTimeOptions } from '../../pages/landingPage/header/Clock.jsx';
 import { FaTimes } from 'react-icons/fa';
-import { Label, Checkbox, Textarea, FileInput, Alert } from 'flowbite-react';
+import {
+  Label,
+  Checkbox,
+  Textarea,
+  FileInput,
+  Alert,
+  Spinner,
+} from 'flowbite-react';
 import { useSelector, useDispatch } from 'react-redux';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
@@ -15,6 +22,7 @@ export default function ViewIncidentReportModal() {
   const [userIncidentReports, setUserIncidentReports] = useState([]);
   const [formData, setFormData] = useState({});
   const [loggedDate, setLoggedDate] = useState('');
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const { incidentReportId } = useParams();
 
@@ -27,6 +35,7 @@ export default function ViewIncidentReportModal() {
         const data = await res.json();
         if (!res.ok) {
           console.log(data.message);
+          setLoading(false);
           return;
         }
         if (res.ok) {
@@ -37,6 +46,7 @@ export default function ViewIncidentReportModal() {
           };
           setFormData(updatedFormData);
           setLoggedDate(updatedFormData.loggedDate);
+          setLoading(false);
         }
       };
       fetchIncidentReport();
@@ -80,15 +90,23 @@ export default function ViewIncidentReportModal() {
                   <div className="flex items-start justify-between p-5 border-b border-solid border-blueGray-200 rounded-t modal-header cursor-move">
                     <h3 className="text-xl font-semibold">Incident Report</h3>
                     <button
-                      className="p-1 ml-auto bg-transparent border-0 dark:text-white text-black opacity-5 float-right text-2xl leading-none font-semibold outline-none focus:outline-none"
+                      className="p-1 ml-auto bg-transparent border-0 dark:text-white text-black float-right text-2xl leading-none font-semibold outline-none focus:outline-none"
                       onClick={handleClose}
                     >
-                      <FaTimes />
+                      <FaTimes className="text-red-500" />
                     </button>
                   </div>
                   {/*body*/}
+
                   <div className="relative p-6 space-y-6 flex-auto">
                     <div className="grid grid-cols-2 gap-4">
+                      {loading ? (
+                        <div className="col-span-2 flex justify-center items-center">
+                          <Spinner size="xl"></Spinner>
+                        </div>
+                      ) : (
+                        <></>
+                      )}
                       <div className="col-span-2">
                         <div className="flex items-center">
                           <strong className="mr-2">Title:</strong>
@@ -183,6 +201,7 @@ export default function ViewIncidentReportModal() {
                       </div>
                     </div>
                   </div>
+
                   {/*footer*/}
                   <div className="flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">
                     <button

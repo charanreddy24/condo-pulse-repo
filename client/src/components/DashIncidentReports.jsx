@@ -83,28 +83,15 @@ export default function DashIncidentReports() {
                   <Table.Cell>
                     <Link
                       className="font-medium text-gray-900 dark:text-white"
-                      to={`/incidentReport/${incidentReport.slug}`}
+                      to={`/view-incidentReport/${incidentReport._id}`}
                     >
                       {incidentReport.title}
                     </Link>
                   </Table.Cell>
+                  <Table.Cell>{incidentReport.column}</Table.Cell>
+                  <Table.Cell>{incidentReport.incidentType}</Table.Cell>
                   <Table.Cell>
-                    <Link
-                      className="font-medium text-gray-900 dark:text-white"
-                      to={`/incidentReport/${incidentReport.slug}`}
-                    >
-                      {incidentReport.column}
-                    </Link>
-                  </Table.Cell>
-                  <Table.Cell>
-                    <Link to={`/incidentReport/${incidentReport.slug}`}>
-                      {incidentReport.incidentType}
-                    </Link>
-                  </Table.Cell>
-                  <Table.Cell>
-                    <Link to={`/incidentReport/${incidentReport.slug}`}>
-                      {incidentReport.loggedBy}
-                    </Link>
+                    <Link to={'?tab=profile'}>{incidentReport.loggedBy}</Link>
                   </Table.Cell>
                   <Table.Cell>
                     <Link
