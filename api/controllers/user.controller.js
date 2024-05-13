@@ -65,8 +65,12 @@ export const signout = async (req, res, next) => {
 
 export const getUsers = async (req, res, next) => {
   try {
-    const usersList = await User.find({});
-    res.status(200).json({ usersList });
+    const usersList = await User.find();
+    const usersWithoutPassword = usersList.map((user) => {
+      const { password, ...rest } = user._doc;
+      return rest;
+    });
+    res.status(200).json({ usersList: usersWithoutPassword });
   } catch (error) {
     next(error);
   }

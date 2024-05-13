@@ -103,12 +103,10 @@ export default function ParkingReportModal({ cardsArray, setCardsArray }) {
                   <div className="flex items-start justify-between p-5 border-b border-solid border-blueGray-200 rounded-t modal-header cursor-move">
                     <h3 className="text-xl font-semibold">Parking Permit</h3>
                     <button
-                      className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                      className="p-1 ml-auto bg-transparent border-0 text-black float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
                       onClick={() => setShowModal(false)}
                     >
-                      <span className="text-red-800 text-2xl block outline-none focus:outline-none">
-                        <FaTimes />
-                      </span>
+                      <FaTimes className="text-red-500 text-2xl block outline-none focus:outline-none" />
                     </button>
                   </div>
                   {/*body*/}

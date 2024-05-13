@@ -157,10 +157,10 @@ export default function IncidentReportModal({ cardsArray, setCardsArray }) {
                   <div className="flex items-start justify-between p-5 border-b border-solid border-blueGray-200 rounded-t modal-header cursor-move">
                     <h3 className="text-xl font-semibold">Incident Report</h3>
                     <button
-                      className="p-1 ml-auto bg-transparent border-0 dark:text-white text-black opacity-5 float-right text-2xl leading-none font-semibold outline-none focus:outline-none"
+                      className="p-1 ml-auto bg-transparent border-0 float-right text-2xl leading-none font-semibold outline-none focus:outline-none"
                       onClick={() => setShowModal(false)}
                     >
-                      <FaTimes />
+                      <FaTimes className="text-red-500" />
                     </button>
                   </div>
                   {/*body*/}

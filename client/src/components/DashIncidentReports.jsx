@@ -63,7 +63,7 @@ export default function DashIncidentReports() {
               </Table.HeadCell>
             </Table.Head>
             {userIncidentReports.map((incidentReport) => (
-              <Table.Body className="divide-y">
+              <Table.Body className="divide-y" key={incidentReport._id}>
                 <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
                   <Table.Cell>
                     {new Date(incidentReport.updatedAt).toLocaleDateString()}
