@@ -75,14 +75,15 @@ export default function DashIncidentReports() {
                           key={index}
                           href={file.fileUrl}
                           download={file.filename}
+                          className="text-teal-500 dark:text-teal-300 hover:underline hover:cursor-pointer"
                         >
-                          {file.filename}
+                          {index + 1}. {file.filename}
                         </a>
                       ))}
                   </Table.Cell>
                   <Table.Cell>
                     <Link
-                      className="font-medium text-gray-900 dark:text-white"
+                      className="font-medium text-teal-500 dark:text-white hover:underline hover:cursor-pointer"
                       to={`/view-incidentReport/${incidentReport._id}`}
                     >
                       {incidentReport.title}
@@ -91,7 +92,12 @@ export default function DashIncidentReports() {
                   <Table.Cell>{incidentReport.column}</Table.Cell>
                   <Table.Cell>{incidentReport.incidentType}</Table.Cell>
                   <Table.Cell>
-                    <Link to={'?tab=profile'}>{incidentReport.loggedBy}</Link>
+                    <Link
+                      to={'?tab=profile'}
+                      className="font-medium text-teal-500 dark:text-white hover:underline hover:cursor-pointer"
+                    >
+                      {incidentReport.loggedBy}
+                    </Link>
                   </Table.Cell>
                   <Table.Cell>
                     <Link

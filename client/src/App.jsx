@@ -11,11 +11,13 @@ import PrivateRoute from '/src/components/PrivateRoute.jsx';
 import LandingPage from './pages/landingPage/LandingPage.jsx';
 import { useSelector } from 'react-redux';
 import ViewIncidentReportModal from './components/Modals/ViewIncidentReportModal.jsx';
+import ScrollToTop from './components/ScrollToTop.jsx';
 
 export default function App() {
   const { currentUser } = useSelector((state) => state.user);
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <NavbarHeader />
       <Routes>
         <Route path="/home" element={<Home />} />
