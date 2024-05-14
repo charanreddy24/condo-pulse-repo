@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { Button, Spinner } from 'flowbite-react';
-import { FiPlus } from 'react-icons/fi';
-import { motion } from 'framer-motion';
-import IncidentReportModal from '/src/components/Modals/IncidentReport.jsx';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { Button, Spinner } from "flowbite-react";
+import { FiPlus } from "react-icons/fi";
+import { motion } from "framer-motion";
+import IncidentReportModal from "/src/components/Modals/IncidentReport.jsx";
+import { Link } from "react-router-dom";
 
 export default function incidentReportBoard({
   selectedPeriod,
@@ -60,14 +60,14 @@ const Column = ({
   setLoading,
 }) => {
   const [active, setActive] = useState(false);
-  const [newColumn, setNewColumn] = useState('');
+  const [newColumn, setNewColumn] = useState("");
 
   useEffect(() => {
     setNewColumn(column);
   }, [column]);
 
   const handleDragStart = (e, card) => {
-    e.dataTransfer.setData('cardId', card.id);
+    e.dataTransfer.setData("cardId", card.id);
   };
 
   const handleDragOver = (e) => {
@@ -80,13 +80,13 @@ const Column = ({
     const indicators = getIndicators();
     clearHighlights(indicators);
     const el = getNearestIndicator(e, indicators);
-    el.element.style.opacity = '1';
+    el.element.style.opacity = "1";
   };
 
   const clearHighlights = (els) => {
     const indicators = els || getIndicators();
     indicators.forEach((i) => {
-      i.style.opacity = '0';
+      i.style.opacity = "0";
     });
   };
 
@@ -122,11 +122,11 @@ const Column = ({
     setActive(false);
     clearHighlights();
 
-    const cardId = e.dataTransfer.getData('cardId');
+    const cardId = e.dataTransfer.getData("cardId");
     const indicators = getIndicators();
     const { element } = getNearestIndicator(e, indicators);
 
-    const before = element.dataset.before || '-1';
+    const before = element.dataset.before || "-1";
 
     if (before !== cardId) {
       let copy = [...cards];
@@ -141,19 +141,19 @@ const Column = ({
       fetch(
         `/api/incidentReport/updateIncidentReportColumn/${cardToTransfer._id}`,
         {
-          method: 'PUT',
+          method: "PUT",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({ newColumn }),
         },
       ).catch((error) => {
-        console.error('Error updating column for card:', cardId, error);
+        console.error("Error updating column for card:", cardId, error);
       });
 
       copy = copy.filter((c) => c.id !== cardId);
 
-      const moveToBack = before === '-1';
+      const moveToBack = before === "-1";
 
       if (moveToBack) {
         copy.push(cardToTransfer);
@@ -171,7 +171,7 @@ const Column = ({
   return (
     <div className="bg-white dark:bg-slate-800 p-4 rounded shadow-sm flex flex-col flex-1 overflow-y-auto ">
       <div className="mb-3 flex items-center text-center justify-between">
-        <h2 className={'mb-4 pb-2 border-b border-gray-300 text-center '}>
+        <h2 className={"mb-4 pb-2 border-b border-gray-300 text-center "}>
           {title}
         </h2>
         {loading ? (
@@ -184,7 +184,7 @@ const Column = ({
           </span>
         )}
       </div>
-      {title === 'Incident Report Created' && (
+      {title === "Incident Report Created" && (
         <IncidentReportModal
           cardsArray={cardsArray}
           setCardsArray={setCardsArray}
@@ -200,7 +200,7 @@ const Column = ({
           onDragLeave={handleDragLeave}
           onDrop={handleDragEnd}
           className={`h-full w-full transition-colors ${
-            active ? 'bg-lime-50' : 'bg-neutral-800/0'
+            active ? "bg-lime-50" : "bg-neutral-800/0"
           }`}
         >
           {filteredCards.map((c) => {
@@ -243,20 +243,20 @@ const Card = ({
           <h3 className="font-medium border-solid border-b-2 inline-block border-violet-300">
             {title}
           </h3>
+
           <div className="flex justify-end p-1">
             <p className="border border-violet-300 rounded-lg inline-block text-xs text-fuchsia-800 p-1">
               Status: {column}
             </p>
           </div>
-
-          <div className="flex items-center justify-between gap-1 text-sm text-black font-medium p-1">
-            <p className="">Logged by: {loggedBy}</p>
-            <p className="">Type of Incident: {incidentType}</p>
-          </div>
-          <div className="text-sm text-black p-1">
-            <p className="">Logged on Date: {loggedDate}</p>
-          </div>
         </Link>
+        <div className="flex items-center justify-between gap-1 text-sm text-black font-medium p-1">
+          <p className="">Logged by: {loggedBy}</p>
+          <p className="">Type of Incident: {incidentType}</p>
+        </div>
+        <div className="text-sm text-black p-1">
+          <p className="">Logged on Date: {loggedDate}</p>
+        </div>
       </motion.div>
       <DropIndicator beforeId={id} column={column} />
     </>
@@ -266,7 +266,7 @@ const Card = ({
 const DropIndicator = ({ beforeId, column }) => {
   return (
     <div
-      data-before={beforeId || '-1'}
+      data-before={beforeId || "-1"}
       data-column={column}
       className="my-0.5 h-0.5 w-full bg-violet-400 opacity-0"
     ></div>

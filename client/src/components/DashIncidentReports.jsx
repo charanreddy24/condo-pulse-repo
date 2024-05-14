@@ -1,12 +1,13 @@
-import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { Table } from 'flowbite-react';
-import { Link } from 'react-router-dom';
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { Table, Spinner } from "flowbite-react";
+import { Link } from "react-router-dom";
 
 export default function DashIncidentReports() {
   const { currentUser } = useSelector((state) => state.user);
   const [userIncidentReports, setUserIncidentReports] = useState([]);
   const [showMore, setShowMore] = useState(true);
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     const fetchIncidentReports = async () => {
       try {
@@ -14,6 +15,7 @@ export default function DashIncidentReports() {
           `/api/incidentReport/getIncidentReports?userId=${currentUser._id}`,
         );
         const data = await res.json();
+        setLoading(false);
         if (res.ok) {
           setUserIncidentReports(data.incidentReports);
           if (data.incidentReports.length < 9) {
@@ -39,10 +41,12 @@ export default function DashIncidentReports() {
         setUserIncidentReports((prev) => [...prev, ...data.incidentReports]);
         if (data.incidentReports.length < 9) {
           setShowMore(false);
+          setLoading(false);
         }
       }
     } catch (error) {
       console.log(error.message);
+      setLoading(false);
     }
   };
 
@@ -93,7 +97,7 @@ export default function DashIncidentReports() {
                   <Table.Cell>{incidentReport.incidentType}</Table.Cell>
                   <Table.Cell>
                     <Link
-                      to={'?tab=profile'}
+                      to={"?tab=profile"}
                       className="font-medium text-teal-500 dark:text-white hover:underline hover:cursor-pointer"
                     >
                       {incidentReport.loggedBy}
@@ -120,6 +124,10 @@ export default function DashIncidentReports() {
             </button>
           )}
         </>
+      ) : loading ? (
+        <div className="col-span-2 flex justify-center items-center">
+          <Spinner size="xl"></Spinner>
+        </div>
       ) : (
         <p>You have created no incident reports</p>
       )}
