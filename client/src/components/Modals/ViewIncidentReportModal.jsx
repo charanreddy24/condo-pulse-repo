@@ -1,19 +1,29 @@
-import { useRef, useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import Draggable from "react-draggable";
-import { torontoTimeOptions } from "../../pages/landingPage/header/Clock.jsx";
-import { FaTimes } from "react-icons/fa";
-import { Spinner } from "flowbite-react";
-import { useSelector, useDispatch } from "react-redux";
-import CommentSection from "../CommentSection.jsx";
+import { useRef, useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import Draggable from 'react-draggable';
+import { torontoTimeOptions } from '../../pages/landingPage/header/Clock.jsx';
+import { FaTimes } from 'react-icons/fa';
+import { Spinner } from 'flowbite-react';
+import { useSelector, useDispatch } from 'react-redux';
+import CommentSection from '../CommentSection.jsx';
 
 export default function ViewIncidentReportModal() {
   const [showModal, setShowModal] = useState(true);
   const draggableRef = useRef(null);
   const { currentUser } = useSelector((state) => state.user);
   const [userIncidentReports, setUserIncidentReports] = useState([]);
-  const [formData, setFormData] = useState({});
-  const [loggedDate, setLoggedDate] = useState("");
+  const [formData, setFormData] = useState({
+    title: '',
+    loggedDate: '',
+    incidentType: 'Trespassers',
+    loggedBy: `${currentUser ? currentUser.username : ''}`,
+    incidentDate: `${new Date().toISOString().split('T')[0]}`,
+    description: '',
+    files: '',
+    id: Math.random().toString(),
+    column: 'Incident Report Created',
+  });
+  const [loggedDate, setLoggedDate] = useState('');
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const { incidentReportId } = useParams();
@@ -34,7 +44,7 @@ export default function ViewIncidentReportModal() {
           setUserIncidentReports(data.incidentReports);
           const updatedFormData = {
             ...data.incidentReports[0],
-            incidentDate: data.incidentReports[0].incidentDate.split("T")[0],
+            incidentDate: data.incidentReports[0].incidentDate.split('T')[0],
           };
           setFormData(updatedFormData);
           setLoggedDate(updatedFormData.loggedDate);
@@ -49,12 +59,12 @@ export default function ViewIncidentReportModal() {
 
   useEffect(() => {
     if (showModal) {
-      document.body.style.overflow = "hidden";
+      document.body.style.overflow = 'hidden';
     } else {
-      document.body.style.overflow = "";
+      document.body.style.overflow = '';
     }
     return () => {
-      document.body.style.overflow = "";
+      document.body.style.overflow = '';
     };
   }, [showModal]);
 
@@ -68,7 +78,7 @@ export default function ViewIncidentReportModal() {
       {showModal && (
         <>
           <main
-            encType={"multipart/form-data"}
+            encType={'multipart/form-data'}
             className="dark:text-white justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
           >
             <div
@@ -132,8 +142,8 @@ export default function ViewIncidentReportModal() {
                       </select>
                     </div>
                     <div className="flex items-center">
-                      <strong className="mr-2">Logged By:</strong>{" "}
-                      {currentUser ? currentUser.username : ""}
+                      <strong className="mr-2">Logged By:</strong>{' '}
+                      {currentUser ? currentUser.username : ''}
                     </div>
                     <div className="flex items-center">
                       <strong>Date of Incident:</strong>
@@ -185,7 +195,7 @@ export default function ViewIncidentReportModal() {
                 {/*footer*/}
                 <div className="flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">
                   <button
-                    className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                    className="text-red-500 border rounded-lg dark:bg-white hover:bg-rose-100 dark:hover:bg-rose-200 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                     type="button"
                     onClick={handleClose}
                   >

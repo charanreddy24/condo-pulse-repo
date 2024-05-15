@@ -3,6 +3,7 @@ import errorHandler from '../utils/error.js';
 import { PutObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3';
 import { s3 } from '../routes/incidentReport.route.js';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+import Comment from '../models/comment.model.js';
 
 export const create = async (req, res, next) => {
   req.files.buffer;
@@ -152,6 +153,17 @@ export const updateIncidentReportColumn = async (req, res, next) => {
       { new: true },
     );
     res.status(200).json(updatedIncidentReportColumn);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getIncidentReportComments = async (req, res, next) => {
+  try {
+    const comments = await Comment.find({
+      incidentReportId: req.params.incidentReportId,
+    }).sort({ createdAt: -1 });
+    res.status(200).json(comments);
   } catch (error) {
     next(error);
   }
