@@ -124,7 +124,7 @@ export default function IncidentReportModal({ cardsArray, setCardsArray }) {
       }
       if (res.ok) {
         setPublishError(null);
-        navigate(`/post/${data.slug}`);
+        navigate(`/view-incidentReport/${data._id}`);
       }
     } catch (error) {
       setPublishError('Something went wrong');

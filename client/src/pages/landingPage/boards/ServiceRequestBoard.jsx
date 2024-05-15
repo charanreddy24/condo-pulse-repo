@@ -40,9 +40,9 @@ export default function parkingReportBoard({
         setCardsArray={setCardsArray}
       />
       <Column
-        title="Actioned"
+        title="Resolved"
         headingColor="text-red-500"
-        column="Actioned"
+        column="Resolved"
         cards={cards}
         setCards={setCards}
         cardsArray={cardsArray}
