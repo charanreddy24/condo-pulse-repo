@@ -1,19 +1,19 @@
-import { useRef, useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Draggable from 'react-draggable';
-import { torontoTimeOptions } from '../../pages/landingPage/header/Clock.jsx';
-import { FaTimes } from 'react-icons/fa';
-import { Label, Checkbox, Textarea, FileInput, Alert } from 'flowbite-react';
-import { useSelector, useDispatch } from 'react-redux';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import { useRef, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import Draggable from "react-draggable";
+import { torontoTimeOptions } from "../../pages/landingPage/header/Clock.jsx";
+import { FaTimes } from "react-icons/fa";
+import { Label, Checkbox, Textarea, FileInput, Alert } from "flowbite-react";
+import { useSelector, useDispatch } from "react-redux";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 export default function IncidentReportModal({ cardsArray, setCardsArray }) {
   const [showModal, setShowModal] = useState(false);
   const draggableRef = useRef(null);
   const [selectedDate, setSelectedDate] = useState();
   const [value, setValue] = useState(new Date().toISOString().slice(0, 10));
-  const [descriptionValue, setDescriptionValue] = useState('');
+  const [descriptionValue, setDescriptionValue] = useState("");
   const [loggedOnDate, setLoggedOnDate] = useState(new Date());
   const [publishError, setPublishError] = useState(null);
   const { currentUser } = useSelector((state) => state.user);
@@ -27,15 +27,15 @@ export default function IncidentReportModal({ cardsArray, setCardsArray }) {
     }
   }, [showModal]);
   const initialFormData = {
-    title: '',
-    loggedDate: `${loggedOnDate.toLocaleString('en-US', torontoTimeOptions)}`,
-    incidentType: 'Trespassers',
-    loggedBy: `${currentUser ? currentUser.username : ''}`,
-    incidentDate: `${new Date().toISOString().split('T')[0]}`,
-    description: '',
-    files: '',
+    title: "",
+    loggedDate: `${loggedOnDate.toLocaleString("en-US", torontoTimeOptions)}`,
+    incidentType: "Trespassers",
+    loggedBy: `${currentUser ? currentUser.username : ""}`,
+    incidentDate: `${new Date().toISOString().split("T")[0]}`,
+    description: "",
+    files: "",
     id: Math.random().toString(),
-    column: 'Incident Report Created',
+    column: "Incident Report Created",
   };
   const [formData, setFormData] = useState({ ...initialFormData });
   const handleInputChange = (e) => {
@@ -46,10 +46,10 @@ export default function IncidentReportModal({ cardsArray, setCardsArray }) {
   useEffect(() => {
     const fetchIncidentReports = async () => {
       try {
-        const res = await fetch('/api/incidentReport/getIncidentReports');
+        const res = await fetch("/api/incidentReport/getIncidentReports");
         const data = await res.json();
         if (res.ok) {
-          setCardsArray(data.incidentReports);
+          setCardsArray(data.allIncidentReports);
         }
       } catch (error) {
         console.log(error.message);
@@ -61,19 +61,19 @@ export default function IncidentReportModal({ cardsArray, setCardsArray }) {
 
   useEffect(() => {
     if (showModal) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = '';
+      document.body.style.overflow = "";
     }
     return () => {
-      document.body.style.overflow = ''; // Restore overflow on component unmount
+      document.body.style.overflow = ""; // Restore overflow on component unmount
     };
   }, [showModal]);
 
   const handleReportDateChange = (e) => {
-    const inputDate = new Date(e.target.value + 'T00:00:00');
-    const day = inputDate.getDate().toString().padStart(2, '0');
-    const month = (inputDate.getMonth() + 1).toString().padStart(2, '0');
+    const inputDate = new Date(e.target.value + "T00:00:00");
+    const day = inputDate.getDate().toString().padStart(2, "0");
+    const month = (inputDate.getMonth() + 1).toString().padStart(2, "0");
     const year = inputDate.getFullYear().toString();
     const formattedDate = day + month + year;
     setSelectedDate(formattedDate);
@@ -93,7 +93,7 @@ export default function IncidentReportModal({ cardsArray, setCardsArray }) {
       !formData.incidentDate ||
       !formData.description
     ) {
-      return alert(JSON.stringify('Please fill out all the fields'));
+      return alert(JSON.stringify("Please fill out all the fields"));
     }
     const formDataToSend = new FormData();
     for (const key in formData) {
@@ -101,18 +101,18 @@ export default function IncidentReportModal({ cardsArray, setCardsArray }) {
     }
     if (formData.files) {
       for (let i = 0; i < formData.files.length; i++) {
-        formDataToSend.append('files', formData.files[i]);
+        formDataToSend.append("files", formData.files[i]);
       }
     }
 
-    const config = { headers: { 'Content-Type': 'multipart/form-data' } };
+    const config = { headers: { "Content-Type": "multipart/form-data" } };
 
     try {
       setFormData({ ...initialFormData });
       setShowModal(false);
 
-      const res = await fetch('/api/incidentReport/create', {
-        method: 'POST',
+      const res = await fetch("/api/incidentReport/create", {
+        method: "POST",
         body: formDataToSend,
         config,
       });
@@ -127,7 +127,7 @@ export default function IncidentReportModal({ cardsArray, setCardsArray }) {
         navigate(`/view-incidentReport/${data._id}`);
       }
     } catch (error) {
-      setPublishError('Something went wrong');
+      setPublishError("Something went wrong");
     }
   };
   return (
@@ -142,7 +142,7 @@ export default function IncidentReportModal({ cardsArray, setCardsArray }) {
       {showModal && (
         <>
           <form
-            encType={'multipart/form-data'}
+            encType={"multipart/form-data"}
             onSubmit={handleSaveChanges}
             className="dark:text-white justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
           >
@@ -180,9 +180,9 @@ export default function IncidentReportModal({ cardsArray, setCardsArray }) {
                         </div>
                       </div>
                       <div className="flex items-center">
-                        <strong className="mr-2">Logged On:</strong>{' '}
+                        <strong className="mr-2">Logged On:</strong>{" "}
                         {loggedOnDate.toLocaleString(
-                          'en-US',
+                          "en-US",
                           torontoTimeOptions,
                         )}
                       </div>
@@ -204,8 +204,8 @@ export default function IncidentReportModal({ cardsArray, setCardsArray }) {
                         </select>
                       </div>
                       <div className="flex items-center">
-                        <strong className="mr-2">Logged By:</strong>{' '}
-                        {currentUser ? currentUser.username : ''}
+                        <strong className="mr-2">Logged By:</strong>{" "}
+                        {currentUser ? currentUser.username : ""}
                       </div>
                       <div className="flex items-center">
                         <strong>Date of Incident:</strong>
