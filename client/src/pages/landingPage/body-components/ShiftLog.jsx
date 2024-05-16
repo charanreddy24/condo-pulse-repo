@@ -1,18 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import TimePickerDropdown from '/src/components/TimePicker.jsx';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
-import { Checkbox, Table, Textarea } from 'flowbite-react';
+import React, { useState, useEffect } from "react";
+import TimePickerDropdown from "/src/components/TimePicker.jsx";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import { Checkbox, Table, Textarea } from "flowbite-react";
+import { useSelector, useDispatch } from "react-redux";
 
 function getCurrentAndEndHours() {
   const now = new Date();
-  const currentHours = now.getHours().toString().padStart(2, '0');
-  const currentMinutes = now.getMinutes().toString().padStart(2, '0');
+  const currentHours = now.getHours().toString().padStart(2, "0");
+  const currentMinutes = now.getMinutes().toString().padStart(2, "0");
   const currentTime = `${currentHours}:${currentMinutes}`;
 
   const endHours = new Date(now.getTime() + 8 * 60 * 60 * 1000);
-  const endHoursHours = endHours.getHours().toString().padStart(2, '0');
-  const endHoursMinutes = endHours.getMinutes().toString().padStart(2, '0');
+  const endHoursHours = endHours.getHours().toString().padStart(2, "0");
+  const endHoursMinutes = endHours.getMinutes().toString().padStart(2, "0");
   const endHoursTime = `${endHoursHours}:${endHoursMinutes}`;
 
   return { current: currentTime, end: endHoursTime };
@@ -21,11 +22,13 @@ function getCurrentAndEndHours() {
 const times = getCurrentAndEndHours();
 
 export default function ShiftLog() {
+  const { currentUser } = useSelector((state) => state.user);
+  console.log(currentUser);
   const [quillData, setQuillData] = useState({
     startTime: times.current,
     endTime: times.end,
-    equipmentReceived: '',
-    description: '',
+    equipmentReceived: "",
+    description: "",
   });
   const [startTime, setStartTime] = useState(times.current);
   const [endTime, setEndTime] = useState(times.end);
@@ -38,7 +41,7 @@ export default function ShiftLog() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await fetch('/api/user/getUsers');
+        const res = await fetch("/api/user/getUsers");
         const data = await res.json();
         if (res.ok) {
           setUsers((prev) => [...prev, ...data.usersList]);
@@ -117,7 +120,10 @@ export default function ShiftLog() {
               <div className="flex flex-col">
                 <div className="flex items-center">
                   <strong className="mr-2">Relieved:</strong>
-                  <select className="w-full ml-2 bg-gray-50 border text-center border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                  <select
+                    value={currentUser.username}
+                    className="w-full ml-2 bg-gray-50 border text-center border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  >
                     {users.map((user, index) => (
                       <option value={user.username} key={user._id}>
                         {user.username}
@@ -127,7 +133,10 @@ export default function ShiftLog() {
                 </div>
                 <div className="flex items-center">
                   <strong className="text-xs">To be Relieved By:</strong>
-                  <select className="w-full ml-2 bg-gray-50 border text-center border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                  <select
+                    value={currentUser.username}
+                    className="w-full ml-2 bg-gray-50 border text-center border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  >
                     {users.map((user) => (
                       <option value={user.username} key={user._id}>
                         {user.username}
