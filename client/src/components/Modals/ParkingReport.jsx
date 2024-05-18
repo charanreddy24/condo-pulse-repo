@@ -6,23 +6,19 @@ import { Label, Checkbox, Textarea, FileInput } from 'flowbite-react';
 import { useSelector, useDispatch } from 'react-redux';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import { useNavigate } from 'react-router-dom';
 
 export default function ParkingReportModal({ cardsArray, setCardsArray }) {
   const [showModal, setShowModal] = useState(false);
   const draggableRef = useRef(null);
-  const [selectedDate, setSelectedDate] = useState();
-  const [value, setValue] = useState(new Date().toISOString().slice(0, 10));
-  const [descriptionValue, setDescriptionValue] = useState('');
   const [loggedOnDate, setLoggedOnDate] = useState(new Date());
   const [parkingDayCount, setParkingDayCount] = useState(24);
   const [vehicleColorValue, setVehicleColorValue] = useState('Red');
   const [vehicleMakeValue, setVehicleMakeValue] = useState('BMW');
   const { currentUser } = useSelector((state) => state.user);
+  const [parkingExpiryDate, setParkingExpiryDate] = useState(new Date());
 
-  const parkingExpiryDate = new Date(loggedOnDate);
-  parkingExpiryDate.setHours(
-    loggedOnDate.getHours() + parseInt(parkingDayCount),
-  );
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (showModal) {
@@ -31,11 +27,18 @@ export default function ParkingReportModal({ cardsArray, setCardsArray }) {
       setLoggedOnDate(currentDate);
     }
   }, [showModal]);
+
+  useEffect(() => {
+    const expiryDate = new Date(loggedOnDate);
+    expiryDate.setHours(expiryDate.getHours() + parseInt(parkingDayCount));
+    setParkingExpiryDate(expiryDate);
+  }, [loggedOnDate, parkingDayCount]);
+
   const initialFormData = {
     visitingUnitNumber: '',
     visitorName: '',
     issuedOn: `${loggedOnDate.toLocaleString('en-US', torontoTimeOptions)}`,
-    parkingDayCount: '24 hours',
+    parkingDayCount: '24',
     validUntil: `${parkingExpiryDate.toLocaleString(
       'en-US',
       torontoTimeOptions,
@@ -47,6 +50,19 @@ export default function ParkingReportModal({ cardsArray, setCardsArray }) {
     column: 'Active Permits',
   };
   const [formData, setFormData] = useState({ ...initialFormData });
+
+  useEffect(() => {
+    setFormData((prevData) => ({
+      ...prevData,
+      parkingDayCount: parkingDayCount,
+      issuedOn: `${loggedOnDate.toLocaleString('en-US', torontoTimeOptions)}`,
+      validUntil: `${parkingExpiryDate.toLocaleString(
+        'en-US',
+        torontoTimeOptions,
+      )}`,
+    }));
+  }, [loggedOnDate, parkingExpiryDate]);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -63,7 +79,8 @@ export default function ParkingReportModal({ cardsArray, setCardsArray }) {
     };
   }, [showModal]);
 
-  const handleSaveChanges = (e) => {
+  const handleSaveChanges = async (e) => {
+    e.preventDefault();
     if (
       !formData.visitorName ||
       !formData.visitingUnitNumber ||
@@ -76,6 +93,23 @@ export default function ParkingReportModal({ cardsArray, setCardsArray }) {
     }
     const card = { ...formData };
     console.log('New card:', card);
+    try {
+      const res = await fetch('/api/parkingRegister/create', {
+        method: 'POST',
+        body: JSON.stringify({
+          content: formData,
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      const data = await res.json();
+      if (res.ok) {
+        console.log(data);
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
     setCardsArray([...cardsArray, card]);
     setFormData({ ...initialFormData });
     setShowModal(false);
@@ -91,7 +125,10 @@ export default function ParkingReportModal({ cardsArray, setCardsArray }) {
       </button>
       {showModal && (
         <>
-          <form className="dark:text-white justify-center items-center flex overflow-x-auto overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
+          <form
+            onSubmit={handleSaveChanges}
+            className="dark:text-white justify-center items-center flex overflow-x-auto overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
+          >
             <Draggable handle=".modal-header" nodeRef={draggableRef}>
               <div
                 className="relative w-auto my-6 h-dvh mx-auto max-w-6xl"
@@ -263,8 +300,7 @@ export default function ParkingReportModal({ cardsArray, setCardsArray }) {
                     </button>
                     <button
                       className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                      type="button"
-                      onClick={handleSaveChanges}
+                      type="submit"
                     >
                       Save Changes
                     </button>

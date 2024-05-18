@@ -15,7 +15,7 @@ const parkingRegistrationSchema = new mongoose.Schema(
       default: '',
     },
     issuedOn: {
-      type: Date,
+      type: String,
       required: true,
     },
     licensePlate: {
@@ -27,7 +27,7 @@ const parkingRegistrationSchema = new mongoose.Schema(
       required: true,
     },
     validUntil: {
-      type: Date,
+      type: String,
       required: true,
     },
     vehicleColor: {

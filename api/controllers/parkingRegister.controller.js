@@ -1,4 +1,5 @@
 import ParkingRegistration from '../models/parkingRegister.model.js';
+import errorHandler from '../utils/error.js';
 
 export const create = async (req, res, next) => {
   try {
@@ -13,13 +14,15 @@ export const create = async (req, res, next) => {
       'visitorName',
     ];
     for (const field of requiredFields) {
-      if (!req.body[field]) {
+      if (!req.body.content[field]) {
         return next(errorHandler(400, `Please provide ${field}`));
       }
     }
+
     const parkingPermitData = {
-      ...req.body,
+      ...req.body.content,
       userId: req.user.id,
+      parkingDayCount: parseInt(req.body.content.parkingDayCount),
     };
 
     const newParkingPermit = new ParkingRegistration(parkingPermitData);
