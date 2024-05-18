@@ -52,6 +52,21 @@ export default function ParkingReportModal({ cardsArray, setCardsArray }) {
   const [formData, setFormData] = useState({ ...initialFormData });
 
   useEffect(() => {
+    const fetchParkingPermits = async () => {
+      try {
+        const res = await fetch('/api/parkingRegister/getParkingPermits');
+        const data = await res.json();
+        if (res.ok) {
+          setCardsArray(data.allParkingPermits);
+        }
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+    fetchParkingPermits();
+  }, [currentUser]);
+
+  useEffect(() => {
     setFormData((prevData) => ({
       ...prevData,
       parkingDayCount: parkingDayCount,
