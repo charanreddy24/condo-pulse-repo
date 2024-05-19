@@ -1,11 +1,12 @@
-// UnitFile.js
 import React from 'react';
+import PassOnSideBar from '../../../components/PassonPage/PassOnSideBar.jsx';
+import MessageContainer from '../../../components/PassonPage/MessageContainer.jsx';
 
 export default function PassOn() {
   return (
-    <div>
-      <h2>Pass On Page</h2>
-      {/* Add unit file page content here */}
+    <div className="flex h-dvh rounded-lg overflow-auto bg-gray-400 bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-0">
+      <PassOnSideBar />
+      <MessageContainer />
     </div>
   );
 }

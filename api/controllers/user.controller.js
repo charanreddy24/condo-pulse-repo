@@ -65,7 +65,8 @@ export const signout = async (req, res, next) => {
 
 export const getUsers = async (req, res, next) => {
   try {
-    const usersList = await User.find();
+    const userId = req.user.id;
+    const usersList = await User.find({ _id: { $ne: userId } });
     const usersWithoutPassword = usersList.map((user) => {
       const { password, ...rest } = user._doc;
       return rest;
