@@ -1,14 +1,23 @@
 import { Avatar } from 'flowbite-react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setSelectedConversation } from '/src/redux/conversations/conversationsSlice.js';
 
-const Conversation = () => {
-  const { currentUser } = useSelector((state) => state.user);
+const Conversation = ({ conversation, lastIdx }) => {
+  const { selectedConversation } = useSelector((state) => state.conversations);
+  const dispatch = useDispatch();
+
+  const isSelected = selectedConversation?._id === conversation._id;
   return (
     <>
-      <div className="flex gap-2 items-center border-2 bg-rose-50  border-rose-100 rounded-lg hover:bg-rose-100 p-5 cursor-pointer">
+      <div
+        className={`flex gap-2 items-center border-2 bg-rose-50 dark:bg-slate-500 border-rose-100 rounded-lg p-5 cursor-pointer ${
+          isSelected ? 'bg-violet-300 dark:bg-violet-400' : ''
+        }`}
+        onClick={() => dispatch(setSelectedConversation(conversation))}
+      >
         <Avatar
           alt="user"
-          img={currentUser.profilePicture}
+          img={conversation.profilePicture}
           rounded
           status="online"
           statusPosition="top-right"
@@ -16,11 +25,11 @@ const Conversation = () => {
 
         <div className="flex flex-col flex-1">
           <div className="flex gap-3 justify-between">
-            <p className="ml-2">Ram</p>
+            <p className="ml-2">{conversation.username}</p>
           </div>
         </div>
       </div>
-      <div className="divider my-0 py-0 h-1"></div>
+      {!lastIdx && <div className="divider my-0 py-0 h-1"></div>}
     </>
   );
 };

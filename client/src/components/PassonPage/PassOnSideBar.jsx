@@ -5,7 +5,7 @@ import Conversations from './Conversations';
 
 const PassOnSideBar = () => {
   return (
-    <div className="border-2 border-indigo-500/50 rounded-lg  p-4 flex flex-col">
+    <div className="border-2 border-indigo-500/50 rounded-lg  p-4 mt-2 ml-2 flex flex-col">
       <TextInput
         type="text"
         placeholder="Search"

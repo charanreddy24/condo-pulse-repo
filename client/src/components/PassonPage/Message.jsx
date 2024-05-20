@@ -1,27 +1,57 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
+import moment from 'moment';
 
-const Message = () => {
+const Message = ({ message }) => {
+  const { currentUser } = useSelector((state) => state.user);
+  const { selectedConversation } = useSelector((state) => state.conversations);
+
+  const fromMe = message.senderId === currentUser._id;
+  const chatClassName = fromMe
+    ? 'self-end bg-violet-300'
+    : 'self-start bg-gray-100 dark:bg-gray-700';
+  const profilePic = fromMe
+    ? currentUser.profilePicture
+    : selectedConversation?.profilePicture;
+  const bubbleBgColor = fromMe
+    ? 'bg-violet-400'
+    : 'bg-gray-100 dark:bg-gray-700';
+
   return (
-    <div class="flex items-start gap-2.5">
-      <img
-        class="w-8 h-8 rounded-full"
-        src="/docs/images/people/profile-picture-3.jpg"
-        alt="Jese image"
-      />
-      <div class="flex flex-col w-full max-w-[320px] leading-1.5 p-4 border-gray-200 bg-gray-100 rounded-e-xl rounded-es-xl dark:bg-gray-700">
-        <div class="flex items-center space-x-2 rtl:space-x-reverse">
-          <span class="text-sm font-semibold text-gray-900 dark:text-white">
-            Ram
+    <div
+      className={`flex items-start gap-2.5 ${
+        fromMe ? 'justify-end' : 'justify-start'
+      } `}
+    >
+      {!fromMe && (
+        <img
+          className="w-8 h-8 rounded-full"
+          src={profilePic}
+          alt="profile pic"
+        />
+      )}
+      <div
+        className={`flex flex-col max-w-[320px] leading-1.5 p-4 border border-gray-200 rounded-xl ${bubbleBgColor} `}
+      >
+        <div className="flex items-center space-x-2 rtl:space-x-reverse">
+          <span className="text-sm font-semibold text-gray-900 dark:text-white">
+            {fromMe ? 'You' : selectedConversation?.username}
           </span>
-          <span class="text-sm font-normal text-gray-500 dark:text-gray-400">
-            11:46
+          <span className="text-sm font-normal text-black dark:text-white">
+            {moment(message.createdAt).fromNow()}
           </span>
         </div>
-        <p class="text-sm font-normal py-2.5 text-gray-900 dark:text-white">
-          That's awesome. I think our users will really appreciate the
-          improvements.
+        <p className="text-sm font-normal py-2.5 text-gray-900 dark:text-white">
+          {message.message}
         </p>
       </div>
+      {fromMe && (
+        <img
+          className="w-8 h-8 rounded-full"
+          src={profilePic}
+          alt="profile pic"
+        />
+      )}
     </div>
   );
 };
