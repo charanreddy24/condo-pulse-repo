@@ -12,6 +12,7 @@ import LandingPage from './pages/landingPage/LandingPage.jsx';
 import { useSelector } from 'react-redux';
 import ViewIncidentReportModal from './components/Modals/ViewIncidentReportModal.jsx';
 import ScrollToTop from './components/ScrollToTop.jsx';
+import { Toaster } from 'react-hot-toast';
 
 export default function App() {
   const { currentUser } = useSelector((state) => state.user);
@@ -19,6 +20,7 @@ export default function App() {
     <BrowserRouter>
       <ScrollToTop />
       <NavbarHeader />
+      <Toaster />
       <Routes>
         <Route path="/home" element={<Home />} />
         <Route path="/about" element={<About />} />
