@@ -1,12 +1,17 @@
 import { Avatar } from 'flowbite-react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSelectedConversation } from '/src/redux/conversations/conversationsSlice.js';
+import { useSocketContext } from '../SocketContext.jsx';
 
 const Conversation = ({ conversation, lastIdx }) => {
   const { selectedConversation } = useSelector((state) => state.conversations);
   const dispatch = useDispatch();
 
   const isSelected = selectedConversation?._id === conversation._id;
+
+  const { onlineUsers } = useSocketContext();
+  const isOnline = onlineUsers.includes(conversation._id);
+
   return (
     <>
       <div
@@ -19,7 +24,7 @@ const Conversation = ({ conversation, lastIdx }) => {
           alt="user"
           img={conversation.profilePicture}
           rounded
-          status="online"
+          status={`${isOnline ? 'online' : 'busy'}`}
           statusPosition="top-right"
         />
 

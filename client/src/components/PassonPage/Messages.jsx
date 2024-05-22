@@ -3,6 +3,7 @@ import Message from './Message.jsx';
 import { useSelector, useDispatch } from 'react-redux';
 import { setMessages } from '../../redux/conversations/conversationsSlice.js';
 import { MessageSkeleton } from '../MessageSkeleton.jsx';
+import ListenMessages from './ListenMessages.jsx';
 
 const Messages = () => {
   const [loading, setLoading] = useState(false);
@@ -11,6 +12,7 @@ const Messages = () => {
   );
   const dispatch = useDispatch();
   const lastMessageRef = useRef();
+  ListenMessages();
 
   useEffect(() => {
     const getMessages = async () => {

@@ -8,6 +8,7 @@ import parkingRegisterRoute from './routes/parkingRegister.route.js';
 import commentRoutes from './routes/comment.route.js';
 import messageRoutes from './routes/message.route.js';
 import cookieParser from 'cookie-parser';
+import { app, server } from './socket/socket.js';
 
 dotenv.config();
 
@@ -19,12 +20,11 @@ mongoose
   .catch((err) => {
     console.log(err);
   });
-const app = express();
 
 app.use(express.json());
 app.use(cookieParser());
 
-app.listen(3000, () => {
+server.listen(3000, () => {
   console.log('server is running on port 3000!');
 });
 
