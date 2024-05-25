@@ -1,6 +1,6 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import io from "socket.io-client";
+import { createContext, useContext, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import io from 'socket.io-client';
 
 const SocketContext = createContext();
 
@@ -15,17 +15,14 @@ export const SocketContextProvider = ({ children }) => {
 
   useEffect(() => {
     if (currentUser) {
-      const socket = io(
-        ["http://localhost:3000", "https://yvx8pr-3000.csb.app/"],
-        {
-          query: {
-            userId: currentUser._id,
-          },
+      const socket = io('http://localhost:3000', {
+        query: {
+          userId: currentUser._id,
         },
-      );
+      });
 
       setSocket(socket);
-      socket.on("getOnlineUsers", (users) => {
+      socket.on('getOnlineUsers', (users) => {
         setOnlineUsers(users);
       });
       return () => socket.close();
