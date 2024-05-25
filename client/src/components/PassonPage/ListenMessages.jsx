@@ -6,14 +6,17 @@ import notificationSound from '/src/assets/sounds/notification.mp3';
 
 const ListenMessages = () => {
   const { socket } = useSocketContext();
-  const { messages } = useSelector((state) => state.conversations);
+  const { messages, selectedConversation } = useSelector(
+    (state) => state.conversations,
+  );
   const dispatch = useDispatch();
-
   useEffect(() => {
     socket?.on('newMessage', (newMessage) => {
       const passOnNotification = new Audio(notificationSound);
       passOnNotification.play();
-      dispatch(setMessages([...messages, newMessage]));
+      if (newMessage.senderId === selectedConversation._id) {
+        dispatch(setMessages([...messages, newMessage]));
+      }
     });
 
     return () => socket?.off('newMessage');
