@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { Table, Spinner } from "flowbite-react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { Table, Spinner } from 'flowbite-react';
+import { Link } from 'react-router-dom';
 
 export default function DashIncidentReports() {
   const { currentUser } = useSelector((state) => state.user);
@@ -63,7 +63,7 @@ export default function DashIncidentReports() {
               <Table.HeadCell>Incident Type</Table.HeadCell>
               <Table.HeadCell>Logged By</Table.HeadCell>
               <Table.HeadCell>
-                <span>Edit</span>
+                <span>View</span>
               </Table.HeadCell>
             </Table.Head>
             {userIncidentReports.map((incidentReport) => (
@@ -97,7 +97,7 @@ export default function DashIncidentReports() {
                   <Table.Cell>{incidentReport.incidentType}</Table.Cell>
                   <Table.Cell>
                     <Link
-                      to={"?tab=profile"}
+                      to={'?tab=profile'}
                       className="font-medium text-teal-500 dark:text-white hover:underline hover:cursor-pointer"
                     >
                       {incidentReport.loggedBy}
