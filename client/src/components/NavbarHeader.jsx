@@ -47,6 +47,7 @@ export default function NavbarHeader() {
     urlParams.set('searchTerm', searchTerm);
     const searchQuery = urlParams.toString();
     navigate(`/search?${searchQuery}`);
+    setSearchTerm('');
   };
 
   return (
@@ -59,20 +60,23 @@ export default function NavbarHeader() {
           HD Protective Services
         </span>
       </Link>
-
-      <form onSubmit={handleSubmit} className="mt-5">
-        <TextInput
-          type="text"
-          placeholder="Press Enter to Search"
-          rightIcon={AiOutlineSearch}
-          className="hidden lg:inline"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-      </form>
-      <Button className="w-12 h-10 lg:hidden" color="gray" pill>
-        <AiOutlineSearch />
-      </Button>
+      {currentUser && (
+        <form onSubmit={handleSubmit} className="mt-5">
+          <TextInput
+            type="text"
+            placeholder="Press Enter to Search"
+            rightIcon={AiOutlineSearch}
+            className="hidden lg:inline"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </form>
+      )}
+      {currentUser && (
+        <Button className="w-12 h-10 lg:hidden" color="gray" pill>
+          <AiOutlineSearch />
+        </Button>
+      )}
       <div className="flex gap-2 md:order-2">
         <Button
           className="w-12 h-10"
@@ -122,6 +126,19 @@ export default function NavbarHeader() {
             <Link to="/home">Home</Link>
           </Navbar.Link>
         )}
+
+        {!currentUser && (
+          <Navbar.Link active={path.pathname === '/About'} as={'div'}>
+            <Link to="/About">About</Link>
+          </Navbar.Link>
+        )}
+
+        {!currentUser && (
+          <Navbar.Link active={path.pathname === '/Careers'} as={'div'}>
+            <Link to="/Careers">Careers</Link>
+          </Navbar.Link>
+        )}
+
         {currentUser ? (
           <Navbar.Link active={path.pathname === '/PostOrders'} as={'div'}>
             <Link to="/PostOrders">Post Orders</Link>
@@ -141,16 +158,18 @@ export default function NavbarHeader() {
           </Navbar.Link>
         )}
       </Navbar.Collapse>
-      <Link
-        to="https://www.google.com/maps/@43.6888639,-79.3903299,3a,75y,342.85h,90t/data=!3m6!1e1!3m4!1s0AZ4h741599tmvZOAcPNgA!2e0!7i16384!8i8192?entry=ttu"
-        target="_blank"
-        rel="noopener noreferrer"
-        className=" items-center justify-between hidden lg:inline hover:underline hover:text-blue-400"
-      >
-        <div className="font-bold p-2">
-          <p className="text-sm">Location: 80 St. Clair Ave E</p>
-        </div>
-      </Link>
+      {currentUser && (
+        <Link
+          to="https://www.google.com/maps/@43.6888639,-79.3903299,3a,75y,342.85h,90t/data=!3m6!1e1!3m4!1s0AZ4h741599tmvZOAcPNgA!2e0!7i16384!8i8192?entry=ttu"
+          target="_blank"
+          rel="noopener noreferrer"
+          className=" items-center justify-between hidden lg:inline hover:underline hover:text-blue-400"
+        >
+          <div className="font-bold p-2">
+            <p className="text-sm">Location: 80 St. Clair Ave E</p>
+          </div>
+        </Link>
+      )}
     </Navbar>
   );
 }

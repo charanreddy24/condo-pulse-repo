@@ -4,6 +4,8 @@ import Dashboard from '/src/pages/dashboard/Dashboard.jsx';
 import Home from '/src/pages/home/Home.jsx';
 import PostOrders from './pages/about/PostOrders.jsx';
 import ImportantContacts from './pages/about/ImportantContacts.jsx';
+import Careers from './pages/about/Careers.jsx';
+import About from './pages/about/About.jsx';
 import SignIn from '/src/pages/sign-in/SignIn.jsx';
 import SignUp from '/src/pages/sign-up/SignUp.jsx';
 import NavbarHeader from '/src/components/NavbarHeader.jsx';
@@ -27,6 +29,8 @@ export default function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/PostOrders" element={<PostOrders />} />
         <Route path="/ImportantContacts" element={<ImportantContacts />} />
+        <Route path="/Careers" element={<Careers />} />
+        <Route path="/About" element={<About />} />
         <Route element={<PrivateRoute />}>
           <Route path="/" element={<LandingPage />} />
           <Route path="/search" element={<Search />} />

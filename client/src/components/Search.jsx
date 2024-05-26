@@ -45,6 +45,10 @@ const Search = () => {
           setLoading(false);
           const data = await res.json();
           setIncidentReports(data.incidentReports);
+          setSidebarData((prevData) => ({
+            ...prevData,
+            searchTerm: '',
+          }));
           if (data.incidentReports.length === 9) {
             setShowMore(true);
           } else {
