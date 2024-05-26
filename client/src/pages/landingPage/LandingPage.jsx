@@ -9,17 +9,13 @@ import PassOn from '/src/pages/landingPage/body-components/PassOn.jsx';
 
 const LandingPage = () => {
   const [selectedOption, setSelectedOption] = useState('Incident Report');
-  const [selectedDate, setSelectedDate] = useState();
-  const [value, setValue] = useState(new Date().toISOString().slice(0, 10));
   const [sideBarSelectedOption, setSideBarSelectedOption] =
     useState('MainBody');
   const [showSidebar, setShowSidebar] = useState(true);
+
   const handleSelectChange = (e) => {
     setSelectedOption(e.target.value);
   };
-  useEffect(() => {
-    console.log(value);
-  }, [value]);
 
   const handleSideBarButtonClick = (option) => {
     setSideBarSelectedOption(option);
@@ -35,7 +31,7 @@ const LandingPage = () => {
         return (
           <MainBody
             selectedOption={selectedOption}
-            selectedDate={selectedDate}
+            handleSelectChange={handleSelectChange}
           />
         );
       case 'UnitFile':
@@ -48,7 +44,7 @@ const LandingPage = () => {
         return (
           <MainBody
             selectedOption={selectedOption}
-            selectedDate={selectedDate}
+            handleSelectChange={handleSelectChange}
           />
         );
     }
@@ -65,10 +61,7 @@ const LandingPage = () => {
       </div>
 
       <div className="h-dvh w-full flex flex-col p-2 gap-y-2 shrink-0 lg:flex-shrink">
-        <Header
-          handleSidebarToggle={handleSidebarToggle}
-          handleSelectChange={handleSelectChange}
-        />
+        <Header handleSidebarToggle={handleSidebarToggle} />
         {renderSelectedPage()}
       </div>
     </div>
