@@ -1,5 +1,6 @@
 import { Navbar, TextInput, Button, Dropdown, Avatar } from 'flowbite-react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { FaMoon, FaSun } from 'react-icons/fa';
 import { useSelector, useDispatch } from 'react-redux';
@@ -9,8 +10,21 @@ import { signOutSuccess } from '../redux/user/userSlice.js';
 export default function NavbarHeader() {
   const path = useLocation().pathname;
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { currentUser } = useSelector((state) => state.user);
   const { theme } = useSelector((state) => state.theme);
+
+  const [searchTerm, setSearchTerm] = useState('');
+  const location = useLocation();
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(location.search);
+    const searchTermFromUrl = urlParams.get('searchTerm');
+    if (searchTermFromUrl) {
+      setSearchTerm(searchTermFromUrl);
+    }
+  }, [location.search]);
+
   const handleSignOut = async () => {
     try {
       const res = await fetch('/api/user/signout', {
@@ -27,6 +41,14 @@ export default function NavbarHeader() {
     }
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const urlParams = new URLSearchParams(location.search);
+    urlParams.set('searchTerm', searchTerm);
+    const searchQuery = urlParams.toString();
+    navigate(`/search?${searchQuery}`);
+  };
+
   return (
     <Navbar className="border-b-2">
       <Link
@@ -38,6 +60,16 @@ export default function NavbarHeader() {
         </span>
       </Link>
 
+      <form onSubmit={handleSubmit} className="mt-5">
+        <TextInput
+          type="text"
+          placeholder="Press Enter to Search"
+          rightIcon={AiOutlineSearch}
+          className="hidden lg:inline"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </form>
       <Button className="w-12 h-10 lg:hidden" color="gray" pill>
         <AiOutlineSearch />
       </Button>
@@ -90,17 +122,35 @@ export default function NavbarHeader() {
             <Link to="/home">Home</Link>
           </Navbar.Link>
         )}
-        {currentUser ? null : (
-          <Navbar.Link active={path.pathname === '/about'} as={'div'}>
-            <Link to="/about">About</Link>
+        {currentUser ? (
+          <Navbar.Link active={path.pathname === '/PostOrders'} as={'div'}>
+            <Link to="/PostOrders">Post Orders</Link>
           </Navbar.Link>
-        )}
+        ) : null}
+        {currentUser ? (
+          <Navbar.Link
+            active={path.pathname === '/importantContacts'}
+            as={'div'}
+          >
+            <Link to="/importantContacts">Important Contacts</Link>
+          </Navbar.Link>
+        ) : null}
         {currentUser ? null : (
           <Navbar.Link active={path.pathname === '/sign-up'} as={'div'}>
             <Link to="/sign-up">Sign Up</Link>
           </Navbar.Link>
         )}
       </Navbar.Collapse>
+      <Link
+        to="https://www.google.com/maps/@43.6888639,-79.3903299,3a,75y,342.85h,90t/data=!3m6!1e1!3m4!1s0AZ4h741599tmvZOAcPNgA!2e0!7i16384!8i8192?entry=ttu"
+        target="_blank"
+        rel="noopener noreferrer"
+        className=" items-center justify-between hidden lg:inline hover:underline hover:text-blue-400"
+      >
+        <div className="font-bold p-2">
+          <p className="text-sm">Location: 80 St. Clair Ave E</p>
+        </div>
+      </Link>
     </Navbar>
   );
 }

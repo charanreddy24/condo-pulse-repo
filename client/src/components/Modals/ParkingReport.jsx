@@ -2,9 +2,9 @@ import { useRef, useState, useEffect } from 'react';
 import Draggable from 'react-draggable';
 import { torontoTimeOptions } from '../../pages/landingPage/header/Clock.jsx';
 import { FaTimes } from 'react-icons/fa';
-import { Label, Checkbox, Textarea, FileInput } from 'flowbite-react';
-import { useSelector, useDispatch } from 'react-redux';
-import ReactQuill from 'react-quill';
+import { FaPenNib } from 'react-icons/fa6';
+import { Checkbox } from 'flowbite-react';
+import { useSelector } from 'react-redux';
 import 'react-quill/dist/quill.snow.css';
 import { useNavigate } from 'react-router-dom';
 
@@ -13,8 +13,6 @@ export default function ParkingReportModal({ cardsArray, setCardsArray }) {
   const draggableRef = useRef(null);
   const [loggedOnDate, setLoggedOnDate] = useState(new Date());
   const [parkingDayCount, setParkingDayCount] = useState(24);
-  const [vehicleColorValue, setVehicleColorValue] = useState('Red');
-  const [vehicleMakeValue, setVehicleMakeValue] = useState('BMW');
   const { currentUser } = useSelector((state) => state.user);
   const [parkingExpiryDate, setParkingExpiryDate] = useState(new Date());
 
@@ -46,6 +44,7 @@ export default function ParkingReportModal({ cardsArray, setCardsArray }) {
     licensePlate: '',
     vehicleMake: 'BMW',
     vehicleColor: 'Red',
+    additionalDetails: '',
     id: Math.random().toString(),
     column: 'Active Permits',
   };
@@ -107,7 +106,6 @@ export default function ParkingReportModal({ cardsArray, setCardsArray }) {
       return alert(JSON.stringify('Please fill out all the fields'));
     }
     const card = { ...formData };
-    console.log('New card:', card);
     try {
       const res = await fetch('/api/parkingRegister/create', {
         method: 'POST',
@@ -131,13 +129,16 @@ export default function ParkingReportModal({ cardsArray, setCardsArray }) {
   };
   return (
     <>
-      <button
-        className="bg-violet-300 hover:bg-violet-400 active:bg-violet-500 font-bold text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-        type="button"
-        onClick={() => setShowModal(true)}
-      >
-        Issue a Parking Permit
-      </button>
+      <div className="flex  items-center justify-center">
+        <button
+          className="flex flex-col lg:flex-row items-center gap-2 w-3/2 bg-violet-300 hover:bg-violet-400 active:bg-violet-500 font-bold text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-4 ease-linear transition-all duration-150"
+          type="button"
+          onClick={() => setShowModal(true)}
+        >
+          <FaPenNib className="lg:text-xl sm:text-4xl " />
+          Issue a Parking Permit
+        </button>
+      </div>
       {showModal && (
         <>
           <form
@@ -297,7 +298,12 @@ export default function ParkingReportModal({ cardsArray, setCardsArray }) {
                     </div>
                     <div className="grid grid-cols-3 gap-4 items-center">
                       <strong className="">Additional Details (If any):</strong>
-                      <textarea className="border border-slate-800 rounded-lg dark:bg-slate-800" />
+                      <textarea
+                        className="border border-slate-800 rounded-lg dark:bg-slate-800"
+                        name="additionalDetails"
+                        value={formData.additionalDetails}
+                        onChange={handleInputChange}
+                      />
                     </div>
                     <div className="">
                       <Checkbox id="accept" required /> I agree that above

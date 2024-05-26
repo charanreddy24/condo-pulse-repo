@@ -21,16 +21,6 @@ const LandingPage = () => {
     console.log(value);
   }, [value]);
 
-  const handleDateChange = (e) => {
-    const inputDate = new Date(e.target.value + 'T00:00:00');
-    const day = inputDate.getDate().toString().padStart(2, '0');
-    const month = (inputDate.getMonth() + 1).toString().padStart(2, '0');
-    const year = inputDate.getFullYear().toString();
-    const formattedDate = day + month + year;
-    setSelectedDate(formattedDate);
-    setValue(e.target.value);
-  };
-
   const handleSideBarButtonClick = (option) => {
     setSideBarSelectedOption(option);
   };
@@ -46,8 +36,6 @@ const LandingPage = () => {
           <MainBody
             selectedOption={selectedOption}
             selectedDate={selectedDate}
-            handleSelectChange={handleSelectChange}
-            handleDateChange={handleDateChange}
           />
         );
       case 'UnitFile':
@@ -61,8 +49,6 @@ const LandingPage = () => {
           <MainBody
             selectedOption={selectedOption}
             selectedDate={selectedDate}
-            handleSelectChange={handleSelectChange}
-            handleDateChange={handleDateChange}
           />
         );
     }
@@ -79,7 +65,10 @@ const LandingPage = () => {
       </div>
 
       <div className="h-dvh w-full flex flex-col p-2 gap-y-2 shrink-0 lg:flex-shrink">
-        <Header handleSidebarToggle={handleSidebarToggle} />
+        <Header
+          handleSidebarToggle={handleSidebarToggle}
+          handleSelectChange={handleSelectChange}
+        />
         {renderSelectedPage()}
       </div>
     </div>

@@ -2,7 +2,8 @@ import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Dashboard from '/src/pages/dashboard/Dashboard.jsx';
 import Home from '/src/pages/home/Home.jsx';
-import About from '/src/pages/about/About.jsx';
+import PostOrders from './pages/about/PostOrders.jsx';
+import ImportantContacts from './pages/about/ImportantContacts.jsx';
 import SignIn from '/src/pages/sign-in/SignIn.jsx';
 import SignUp from '/src/pages/sign-up/SignUp.jsx';
 import NavbarHeader from '/src/components/NavbarHeader.jsx';
@@ -13,6 +14,7 @@ import { useSelector } from 'react-redux';
 import ViewIncidentReportModal from './components/Modals/ViewIncidentReportModal.jsx';
 import ScrollToTop from './components/ScrollToTop.jsx';
 import { Toaster } from 'react-hot-toast';
+import Search from './components/Search.jsx';
 
 export default function App() {
   const { currentUser } = useSelector((state) => state.user);
@@ -23,9 +25,11 @@ export default function App() {
       <Toaster />
       <Routes>
         <Route path="/home" element={<Home />} />
-        <Route path="/about" element={<About />} />
+        <Route path="/PostOrders" element={<PostOrders />} />
+        <Route path="/ImportantContacts" element={<ImportantContacts />} />
         <Route element={<PrivateRoute />}>
           <Route path="/" element={<LandingPage />} />
+          <Route path="/search" element={<Search />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route
             path="/view-incidentReport/:incidentReportId"

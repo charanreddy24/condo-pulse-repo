@@ -4,12 +4,7 @@ import { FiPlus } from 'react-icons/fi';
 import { motion } from 'framer-motion';
 import ServiceRequestModal from '/src/components/Modals/ServiceRequest.jsx';
 
-export default function parkingReportBoard({
-  selectedOption,
-  selectedPeriod,
-  cardsArray,
-  setCardsArray,
-}) {
+export default function parkingReportBoard({ cardsArray, setCardsArray }) {
   const handleCreateClick = () => {
     console.log('Create button clicked');
   };

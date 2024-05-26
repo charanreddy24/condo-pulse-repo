@@ -1,15 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { Button, Spinner } from "flowbite-react";
-import { FiPlus } from "react-icons/fi";
-import { motion } from "framer-motion";
-import IncidentReportModal from "/src/components/Modals/IncidentReport.jsx";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { Button, Spinner } from 'flowbite-react';
+import { FiPlus } from 'react-icons/fi';
+import { motion } from 'framer-motion';
+import IncidentReportModal from '/src/components/Modals/IncidentReport.jsx';
+import { Link } from 'react-router-dom';
+import toast from 'react-hot-toast';
+import { useSelector } from 'react-redux';
 
-export default function incidentReportBoard({
-  selectedPeriod,
-  cardsArray,
-  setCardsArray,
-}) {
+export default function incidentReportBoard({ cardsArray, setCardsArray }) {
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -60,14 +58,15 @@ const Column = ({
   setLoading,
 }) => {
   const [active, setActive] = useState(false);
-  const [newColumn, setNewColumn] = useState("");
+  const [newColumn, setNewColumn] = useState('');
+  const { currentUser } = useSelector((state) => state.user);
 
   useEffect(() => {
     setNewColumn(column);
   }, [column]);
 
   const handleDragStart = (e, card) => {
-    e.dataTransfer.setData("cardId", card.id);
+    e.dataTransfer.setData('cardId', card.id);
   };
 
   const handleDragOver = (e) => {
@@ -80,13 +79,13 @@ const Column = ({
     const indicators = getIndicators();
     clearHighlights(indicators);
     const el = getNearestIndicator(e, indicators);
-    el.element.style.opacity = "1";
+    el.element.style.opacity = '1';
   };
 
   const clearHighlights = (els) => {
     const indicators = els || getIndicators();
     indicators.forEach((i) => {
-      i.style.opacity = "0";
+      i.style.opacity = '0';
     });
   };
 
@@ -119,14 +118,17 @@ const Column = ({
   };
 
   const handleDragEnd = (e) => {
+    currentUser.isAdmin
+      ? null
+      : toast.error(`Only Admin can move this into ${newColumn}`);
     setActive(false);
     clearHighlights();
 
-    const cardId = e.dataTransfer.getData("cardId");
+    const cardId = e.dataTransfer.getData('cardId');
     const indicators = getIndicators();
     const { element } = getNearestIndicator(e, indicators);
 
-    const before = element.dataset.before || "-1";
+    const before = element.dataset.before || '-1';
 
     if (before !== cardId) {
       let copy = [...cards];
@@ -141,19 +143,19 @@ const Column = ({
       fetch(
         `/api/incidentReport/updateIncidentReportColumn/${cardToTransfer._id}`,
         {
-          method: "PUT",
+          method: 'PUT',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify({ newColumn }),
         },
       ).catch((error) => {
-        console.error("Error updating column for card:", cardId, error);
+        console.error('Error updating column for card:', cardId, error);
       });
 
       copy = copy.filter((c) => c.id !== cardId);
 
-      const moveToBack = before === "-1";
+      const moveToBack = before === '-1';
 
       if (moveToBack) {
         copy.push(cardToTransfer);
@@ -165,13 +167,16 @@ const Column = ({
 
       setCards(copy);
     }
+    currentUser.isAdmin
+      ? toast.success(`Successfully Moved into ${newColumn}`)
+      : null;
   };
   const filteredCards = cards.filter((c) => c.column === column);
 
   return (
     <div className="bg-white dark:bg-slate-800 p-4 rounded shadow-sm flex flex-col flex-1 overflow-y-auto ">
       <div className="mb-3 flex items-center text-center justify-between">
-        <h2 className={"mb-4 pb-2 border-b border-gray-300 text-center "}>
+        <h2 className={'mb-4 pb-2 border-b border-gray-300 text-center '}>
           {title}
         </h2>
         {loading ? (
@@ -184,7 +189,7 @@ const Column = ({
           </span>
         )}
       </div>
-      {title === "Incident Report Created" && (
+      {title === 'Incident Report Created' && (
         <IncidentReportModal
           cardsArray={cardsArray}
           setCardsArray={setCardsArray}
@@ -200,7 +205,7 @@ const Column = ({
           onDragLeave={handleDragLeave}
           onDrop={handleDragEnd}
           className={`h-full w-full transition-colors ${
-            active ? "bg-lime-50" : "bg-neutral-800/0"
+            active ? 'bg-lime-50' : 'bg-neutral-800/0'
           }`}
         >
           {filteredCards.map((c) => {
@@ -226,6 +231,11 @@ const Card = ({
   description,
   _id,
 }) => {
+  const { currentUser } = useSelector((state) => state.user);
+  const dragStartHandler = currentUser.isAdmin
+    ? (e) => handleDragStart(e, { title, id, column, slug })
+    : null;
+
   return (
     <>
       <DropIndicator beforeId={id} column={column} />
@@ -233,7 +243,7 @@ const Card = ({
         layout
         layoutId={id}
         draggable="true"
-        onDragStart={(e) => handleDragStart(e, { title, id, column, slug })}
+        onDragStart={dragStartHandler}
         className="cursor-grab border  rounded bg-gradient-to-r from-red-200 via-mint-500 to-purple-200 outline outline-1 outline-gray-300 p-3 active:cursor-grabbing"
       >
         <Link
@@ -266,7 +276,7 @@ const Card = ({
 const DropIndicator = ({ beforeId, column }) => {
   return (
     <div
-      data-before={beforeId || "-1"}
+      data-before={beforeId || '-1'}
       data-column={column}
       className="my-0.5 h-0.5 w-full bg-violet-400 opacity-0"
     ></div>

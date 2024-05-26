@@ -1,9 +1,9 @@
-import IncidentReport from "../models/incidentReport.model.js";
-import errorHandler from "../utils/error.js";
-import { PutObjectCommand, GetObjectCommand } from "@aws-sdk/client-s3";
-import { s3 } from "../routes/incidentReport.route.js";
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import Comment from "../models/comment.model.js";
+import IncidentReport from '../models/incidentReport.model.js';
+import errorHandler from '../utils/error.js';
+import { PutObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3';
+import { s3 } from '../routes/incidentReport.route.js';
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+import Comment from '../models/comment.model.js';
 
 export const create = async (req, res, next) => {
   req.files.buffer;
@@ -24,10 +24,10 @@ export const create = async (req, res, next) => {
   }
   try {
     const requiredFields = [
-      "title",
-      "incidentType",
-      "incidentDate",
-      "description",
+      'title',
+      'incidentType',
+      'incidentDate',
+      'description',
     ];
     for (const field of requiredFields) {
       if (!req.body[field]) {
@@ -49,7 +49,7 @@ export const create = async (req, res, next) => {
           filename: file.originalname,
           contentType: file.mimetype,
           data: file.buffer,
-          fileUrl: "",
+          fileUrl: '',
         });
       });
     }
@@ -67,10 +67,10 @@ const generateSlug = (title) => {
   return (
     title
       .toLowerCase()
-      .split(" ")
-      .join("-")
-      .replace(/[^a-z0-9-]/g, "") +
-    "-" +
+      .split(' ')
+      .join('-')
+      .replace(/[^a-z0-9-]/g, '') +
+    '-' +
     Math.random().toString(9).slice(-4)
   );
 };
@@ -80,21 +80,27 @@ export const getIncidentReports = async (req, res, next) => {
   try {
     const startIndex = parseInt(req.query.startIndex) || 0;
     const limit = parseInt(req.query.limit) || 9;
-    const sortDirection = req.query.order === "asc" ? 1 : -1;
+    const sortDirection = req.query.sort === 'asc' ? 1 : -1;
+
+    const searchTermQuery = req.query.searchTerm
+      ? {
+          $or: [
+            { title: { $regex: req.query.searchTerm, $options: 'i' } },
+            { description: { $regex: req.query.searchTerm, $options: 'i' } },
+          ],
+        }
+      : {};
+
     const incidentReports = await IncidentReport.find({
+      ...searchTermQuery,
       ...(req.query.userId && { userId: req.query.userId }),
       ...(req.query.slug && { slug: req.query.slug }),
       ...(req.query.incidentType && { incidentType: req.query.incidentType }),
       ...(req.query.incidentReportId && { _id: req.query.incidentReportId }),
-
-      ...(req.query.searchTerm && {
-        $or: [
-          { title: { $regex: req.query.searchTerm, $options: "i" } },
-          { description: { $regex: req.query.searchTerm, $options: "i" } },
-        ],
-      }),
+      ...(req.query.description && { description: req.query.description }),
+      ...(req.query.incidentDate && { incidentDate: req.query.incidentDate }),
     })
-      .populate("files")
+      .populate('files')
       .sort({ updatedAt: sortDirection })
       .skip(startIndex)
       .limit(limit);
@@ -120,12 +126,15 @@ export const getIncidentReports = async (req, res, next) => {
     }
 
     const allIncidentReports = await IncidentReport.find({
+      ...searchTermQuery,
       ...(req.query.userId && { userId: req.query.userId }),
       ...(req.query.slug && { slug: req.query.slug }),
       ...(req.query.incidentType && { incidentType: req.query.incidentType }),
       ...(req.query.incidentReportId && { _id: req.query.incidentReportId }),
+      ...(req.query.description && { description: req.query.description }),
+      ...(req.query.incidentDate && { incidentDate: req.query.incidentDate }),
     })
-      .populate("files")
+      .populate('files')
       .sort({ updatedAt: sortDirection });
 
     const totalIncidentReports = await IncidentReport.countDocuments();
