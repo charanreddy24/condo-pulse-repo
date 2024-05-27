@@ -7,6 +7,7 @@ import incidentReportRoute from './routes/incidentReport.route.js';
 import parkingRegisterRoute from './routes/parkingRegister.route.js';
 import commentRoutes from './routes/comment.route.js';
 import messageRoutes from './routes/message.route.js';
+import unitFileRoutes from './routes/unitFile.route.js';
 import cookieParser from 'cookie-parser';
 import { app, server } from './socket/socket.js';
 
@@ -34,6 +35,7 @@ app.use('/api/incidentReport', incidentReportRoute);
 app.use('/api/parkingRegister', parkingRegisterRoute);
 app.use('/api/comment', commentRoutes);
 app.use('/api/messages', messageRoutes);
+app.use('/api/unitFile', unitFileRoutes);
 
 //Middleware to handle the errors more effectively
 app.use((err, req, res, next) => {
