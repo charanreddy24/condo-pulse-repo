@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Modal, Button, Toast } from 'flowbite-react';
+import { Table, Modal, Button, Spinner } from 'flowbite-react';
 import { useSelector } from 'react-redux';
 import { FaPenNib } from 'react-icons/fa6';
 import toast from 'react-hot-toast';
+import { Link } from 'react-router-dom';
 
 export default function UnitFile() {
   const { currentUser } = useSelector((state) => state.user);
@@ -17,18 +18,52 @@ export default function UnitFile() {
     spotDetails: '',
   });
 
+  const [showMore, setShowMore] = useState(true);
+  const [loading, setLoading] = useState(true);
+  const [unitFilesData, setUnitFilesData] = useState([]);
+
   useEffect(() => {
     const fetchUnitFiles = async () => {
+      const sortDirection = 'asc';
       try {
-        const res = await fetch('/api/unitFile/getUnitFiles');
+        const res = await fetch(
+          `/api/unitFile/getUnitFiles?sort=${sortDirection}`,
+        );
         const data = await res.json();
-        console.log(data.unitFiles);
+        setLoading(false);
+        if (res.ok) {
+          setUnitFilesData(data.unitFiles);
+          if (data.unitFiles.length < 6) {
+            setShowMore(false);
+          }
+        }
       } catch (error) {
         toast.error(error.message);
       }
     };
     fetchUnitFiles();
   }, [currentUser]);
+
+  const handleShowMore = async () => {
+    const startIndex = unitFilesData.length;
+    const sortDirection = 'asc';
+    try {
+      const res = await fetch(
+        `/api/unitFile/getUnitFiles?sort=${sortDirection}&startIndex=${startIndex}`,
+      );
+      const data = await res.json();
+      if (res.ok) {
+        setUnitFilesData((prev) => [...prev, ...data.unitFiles]);
+        if (data.unitFiles.length < 6) {
+          setShowMore(false);
+          setLoading(false);
+        }
+      }
+    } catch (error) {
+      console.log(error.message);
+      setLoading(false);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -48,6 +83,8 @@ export default function UnitFile() {
       const data = await res.json();
       if (res.ok) {
         toast.success('Resident Added Successfully');
+      } else {
+        toast.error('Unit Number should be Unique');
       }
 
       setFormData({
@@ -87,7 +124,7 @@ export default function UnitFile() {
 
   return (
     <>
-      <div className="flex justify-between items-center mb-4">
+      <div className="flex justify-between items-center mb-1">
         <h2 className="mx-auto font-semibold text-gray-800 text-2xl underline">
           Unit File Page
         </h2>
@@ -238,17 +275,111 @@ export default function UnitFile() {
           </Modal.Body>
         </Modal>
       )}
-      <div className="h-dvh bg-slate-50 dark:bg-slate-800 rounded-lg p-4">
-        <Table hoverable className="shadow-md">
-          <Table.Head>
-            <Table.HeadCell>Unit Number</Table.HeadCell>
-            <Table.HeadCell>Registered Residents</Table.HeadCell>
-            <Table.HeadCell>Contact Details</Table.HeadCell>
-            <Table.HeadCell>Parking</Table.HeadCell>
-            <Table.HeadCell>Edit</Table.HeadCell>
-          </Table.Head>
-          <Table.Body>{/* Table rows data goes here */}</Table.Body>
-        </Table>
+      <div className="h-dvh bg-slate-50 dark:bg-slate-800 rounded-lg table-auto overflow-x-scroll scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-500">
+        {unitFilesData.length > 0 ? (
+          <>
+            <Table hoverable className="shadow-md">
+              <Table.Head>
+                <Table.HeadCell>Unit Number</Table.HeadCell>
+                <Table.HeadCell>Registered Residents</Table.HeadCell>
+                <Table.HeadCell>Vehicle & Spot Details</Table.HeadCell>
+                <Table.HeadCell>Edit</Table.HeadCell>
+              </Table.Head>
+
+              <Table.Body className="divide-y">
+                {unitFilesData.map((unitData) => (
+                  <Table.Row
+                    className="bg-white dark:border-gray-700 dark:bg-gray-800"
+                    key={unitData._id}
+                  >
+                    <Table.Cell className="p-4 font-medium text-gray-900 dark:text-gray-200">
+                      {unitData.unitNumber}
+                    </Table.Cell>
+                    <Table.Cell className="p-4">
+                      {unitData.residents && (
+                        <Table className="w-full bg-gray-50 dark:bg-gray-700 rounded-lg shadow-md">
+                          <Table.Head>
+                            <Table.HeadCell className="text-center bg-violet-300 text-white dark:bg-teal-700 dark:text-gray-200">
+                              Registered Residents
+                            </Table.HeadCell>
+                          </Table.Head>
+                          <Table.Body className="divide-y">
+                            <Table.Row className="bg-violet-100 dark:bg-teal-800">
+                              <Table.Cell className="font-semibold">
+                                Name
+                              </Table.Cell>
+                              <Table.Cell className="font-semibold">
+                                Email
+                              </Table.Cell>
+                              <Table.Cell className="font-semibold">
+                                Phone
+                              </Table.Cell>
+                              <Table.Cell className="font-semibold">
+                                Resident Type
+                              </Table.Cell>
+                            </Table.Row>
+                            {unitData.residents.map((resident, index) => (
+                              <Table.Row
+                                key={index}
+                                className="bg-white dark:bg-gray-900 hover:bg-violet-100 dark:hover:bg-teal-900"
+                              >
+                                <Table.Cell className="text-teal-500 dark:text-teal-300">
+                                  {resident.name}
+                                </Table.Cell>
+                                <Table.Cell className="text-gray-600 dark:text-gray-400">
+                                  {resident.email}
+                                </Table.Cell>
+                                <Table.Cell className="text-gray-600 dark:text-gray-400">
+                                  {resident.phone}
+                                </Table.Cell>
+                                <Table.Cell className="text-gray-800 dark:text-gray-200">
+                                  {resident.residentType}
+                                </Table.Cell>
+                              </Table.Row>
+                            ))}
+                          </Table.Body>
+                        </Table>
+                      )}
+                    </Table.Cell>
+                    <Table.Cell className="p-4">
+                      <p>
+                        {unitData.licensePlate ? unitData.licensePlate : 'N/A'}
+                      </p>
+                      <p>
+                        {unitData.spotDetails ? unitData.spotDetails : 'N/A'}
+                      </p>
+                    </Table.Cell>
+                    <Table.Cell className="p-4">
+                      <Link
+                        className="text-teal-500 hover:underline"
+                        to={`/edit/${unitData._id}`}
+                      >
+                        <span>Edit</span>
+                      </Link>
+                    </Table.Cell>
+                  </Table.Row>
+                ))}
+              </Table.Body>
+            </Table>
+            {showMore && (
+              <button
+                onClick={handleShowMore}
+                className="w-full text-teal-500 self-center text-sm py-3"
+              >
+                Show More
+              </button>
+            )}
+          </>
+        ) : loading ? (
+          <div className="flex justify-center items-center">
+            <Spinner size="xl"></Spinner>
+          </div>
+        ) : (
+          <p className="flex justify-center items-center">
+            No Residents Created, Request the Admin to enter the Details of the
+            residents
+          </p>
+        )}
       </div>
     </>
   );

@@ -34,8 +34,37 @@ export const create = async (req, res, next) => {
 
 export const getUnitFiles = async (req, res, next) => {
   try {
-    const unitFiles = await UnitFile.find({}).populate('residents');
-    res.status(201).json({ unitFiles });
+    const startIndex = parseInt(req.query.startIndex) || 0;
+    const limit = parseInt(req.query.limit) || 6;
+    const sortDirection = req.query.sort === 'asc' ? 1 : -1;
+
+    const searchTerm = req.query.searchTerm ? req.query.searchTerm : '';
+
+    const searchTermQuery = searchTerm
+      ? {
+          $or: [
+            { unitNumber: { $regex: searchTerm, $options: 'i' } },
+            { 'residents.name': { $regex: searchTerm, $options: 'i' } },
+            { 'residents.email': { $regex: searchTerm, $options: 'i' } },
+            { 'residents.phone': { $regex: searchTerm, $options: 'i' } },
+            { 'residents.residentType': { $regex: searchTerm, $options: 'i' } },
+          ],
+        }
+      : {};
+
+    const unitFiles = await UnitFile.find({
+      ...searchTermQuery,
+      ...(req.query.unitNumber && { unitNumber: req.query.unitNumber }),
+    })
+      .populate('residents')
+      .sort({ unitNumber: sortDirection })
+      .skip(startIndex)
+      .limit(limit);
+
+    const totalUnits = await UnitFile.countDocuments();
+    const totalRegisteredResidents = await Resident.countDocuments();
+
+    res.status(200).json({ unitFiles, totalUnits, totalRegisteredResidents });
   } catch (error) {
     next(error);
   }
