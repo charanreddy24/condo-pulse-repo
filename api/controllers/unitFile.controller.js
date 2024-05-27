@@ -31,3 +31,12 @@ export const create = async (req, res, next) => {
     next(error);
   }
 };
+
+export const getUnitFiles = async (req, res, next) => {
+  try {
+    const unitFiles = await UnitFile.find({}).populate('residents');
+    res.status(201).json({ unitFiles });
+  } catch (error) {
+    next(error);
+  }
+};

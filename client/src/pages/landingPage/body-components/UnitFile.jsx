@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import { Table, Modal, Button } from 'flowbite-react';
+import React, { useEffect, useState } from 'react';
+import { Table, Modal, Button, Toast } from 'flowbite-react';
 import { useSelector } from 'react-redux';
 import { FaPenNib } from 'react-icons/fa6';
+import toast from 'react-hot-toast';
 
 export default function UnitFile() {
   const { currentUser } = useSelector((state) => state.user);
@@ -16,18 +17,49 @@ export default function UnitFile() {
     spotDetails: '',
   });
 
-  const handleSubmit = (e) => {
+  useEffect(() => {
+    const fetchUnitFiles = async () => {
+      try {
+        const res = await fetch('/api/unitFile/getUnitFiles');
+        const data = await res.json();
+        console.log(data.unitFiles);
+      } catch (error) {
+        toast.error(error.message);
+      }
+    };
+    fetchUnitFiles();
+  }, [currentUser]);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const updatedFormData = { ...formData, residents };
-    console.log('Form Data:', updatedFormData);
-    setShowModal(false);
-    setFormData({
-      unitNumber: '',
-      residents: [],
-      licensePlate: '',
-      spotDetails: '',
-    });
-    setResidents([{ name: '', email: '', phone: '', residentType: '' }]);
+
+    try {
+      setShowModal(false);
+      const updatedFormData = { ...formData, residents };
+
+      const res = await fetch('/api/unitFile/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedFormData),
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        toast.success('Resident Added Successfully');
+      }
+
+      setFormData({
+        unitNumber: '',
+        residents: [],
+        licensePlate: '',
+        spotDetails: '',
+      });
+      setResidents([{ name: '', email: '', phone: '', residentType: '' }]);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleInputChange = (e) => {
