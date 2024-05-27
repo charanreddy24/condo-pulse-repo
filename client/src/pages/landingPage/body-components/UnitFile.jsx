@@ -283,7 +283,7 @@ export default function UnitFile() {
                 <Table.HeadCell>Unit Number</Table.HeadCell>
                 <Table.HeadCell>Registered Residents</Table.HeadCell>
                 <Table.HeadCell>Vehicle & Spot Details</Table.HeadCell>
-                <Table.HeadCell>Edit</Table.HeadCell>
+                {currentUser.isAdmin && <Table.HeadCell>Edit</Table.HeadCell>}
               </Table.Head>
 
               <Table.Body className="divide-y">
@@ -349,14 +349,16 @@ export default function UnitFile() {
                         {unitData.spotDetails ? unitData.spotDetails : 'N/A'}
                       </p>
                     </Table.Cell>
-                    <Table.Cell className="p-4">
-                      <Link
-                        className="text-teal-500 hover:underline"
-                        to={`/edit/${unitData._id}`}
-                      >
-                        <span>Edit</span>
-                      </Link>
-                    </Table.Cell>
+                    {currentUser.isAdmin && (
+                      <Table.Cell className="p-4">
+                        <Link
+                          className="text-teal-500 hover:underline"
+                          to={`/edit/${unitData._id}`}
+                        >
+                          <span>Edit</span>
+                        </Link>
+                      </Table.Cell>
+                    )}
                   </Table.Row>
                 ))}
               </Table.Body>

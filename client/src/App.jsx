@@ -14,6 +14,7 @@ import PrivateRoute from '/src/components/PrivateRoute.jsx';
 import LandingPage from './pages/landingPage/LandingPage.jsx';
 import { useSelector } from 'react-redux';
 import ViewIncidentReportModal from './components/Modals/ViewIncidentReportModal.jsx';
+import EditUnitFile from './components/Modals/EditUnitFile.jsx';
 import ScrollToTop from './components/ScrollToTop.jsx';
 import { Toaster } from 'react-hot-toast';
 import Search from './components/Search.jsx';
@@ -39,6 +40,7 @@ export default function App() {
             path="/view-incidentReport/:incidentReportId"
             element={<ViewIncidentReportModal />}
           />
+          <Route path="/edit/:unitFileId" element={<EditUnitFile />} />
         </Route>
         <Route
           path="/sign-in"

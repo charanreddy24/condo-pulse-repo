@@ -55,6 +55,7 @@ export const getUnitFiles = async (req, res, next) => {
     const unitFiles = await UnitFile.find({
       ...searchTermQuery,
       ...(req.query.unitNumber && { unitNumber: req.query.unitNumber }),
+      ...(req.query.unitFileId && { _id: req.query.unitFileId }),
     })
       .populate('residents')
       .sort({ unitNumber: sortDirection })

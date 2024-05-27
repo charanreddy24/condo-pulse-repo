@@ -8,7 +8,7 @@ export default function Comment({ comment }) {
       try {
         const res = await fetch('/api/user/getUsers');
         const data = await res.json();
-        const commentedUser = data.usersList.find(
+        const commentedUser = data.allUsers.find(
           (user) => user._id === comment.userId,
         );
         if (res.ok) {

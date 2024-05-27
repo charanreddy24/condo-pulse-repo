@@ -67,11 +67,22 @@ export const getUsers = async (req, res, next) => {
   try {
     const userId = req.user.id;
     const usersList = await User.find({ _id: { $ne: userId } });
-    const usersWithoutPassword = usersList.map((user) => {
-      const { password, ...rest } = user._doc;
-      return rest;
+    const allUsersList = await User.find({});
+
+    const usersWithoutPassword = (userList) => {
+      return userList.map((user) => {
+        const { password, ...rest } = user._doc;
+        return rest;
+      });
+    };
+
+    const usersPasswordRemoved = usersWithoutPassword(usersList);
+    const allUsersWithoutPassword = usersWithoutPassword(allUsersList);
+
+    res.status(200).json({
+      users: usersPasswordRemoved,
+      allUsers: allUsersWithoutPassword,
     });
-    res.status(200).json({ usersList: usersWithoutPassword });
   } catch (error) {
     next(error);
   }
