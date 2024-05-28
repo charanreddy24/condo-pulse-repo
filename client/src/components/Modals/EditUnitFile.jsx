@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Modal, Button, Spinner } from 'flowbite-react';
+import { Modal, Button, Spinner } from 'flowbite-react';
 import { useSelector } from 'react-redux';
-import { FaPenNib } from 'react-icons/fa6';
 import toast from 'react-hot-toast';
-import { Link, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 export default function EditUnitFile() {
-  const { currentUser } = useSelector((state) => state.user);
   const [showModal, setShowModal] = useState(true);
   const [residents, setResidents] = useState([
     { name: '', email: '', phone: '', residentType: '' },
@@ -18,9 +16,8 @@ export default function EditUnitFile() {
     spotDetails: '',
   });
 
-  const [loading, setLoading] = useState(true);
   const [unitFileData, setUnitFileData] = useState([]);
-
+  const navigate = useNavigate();
   const { unitFileId } = useParams();
 
   useEffect(() => {
@@ -35,11 +32,10 @@ export default function EditUnitFile() {
           setUnitFileData(data.unitFiles);
           const updatedFormData = { ...data.unitFiles[0] };
           setFormData(updatedFormData);
-          setLoading(false);
+          setResidents(data.unitFiles[0].residents);
         }
       } catch (error) {
         toast.error(error.message);
-        setLoading(false);
       }
     };
     fetchUnitFile();
@@ -49,10 +45,8 @@ export default function EditUnitFile() {
     e.preventDefault();
 
     try {
-      setShowModal(false);
       const updatedFormData = { ...formData, residents };
-
-      const res = await fetch('/api/unitFile/edit', {
+      const res = await fetch(`/api/unitFile/updateUnitFile/${unitFileId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -60,13 +54,15 @@ export default function EditUnitFile() {
         body: JSON.stringify(updatedFormData),
       });
 
-      const data = await res.json();
       if (res.ok) {
-        toast.success('Resident information updated Successfully');
-      } else {
-        toast.error('Unexpected error');
+        const data = await res.json();
+        console.log(data);
+        toast.success('Resident information updated successfully');
+        setShowModal(false);
+        navigate(-1);
       }
     } catch (error) {
+      toast.failure('Update unsuccessful, something went wrong');
       console.log(error);
     }
   };
@@ -102,12 +98,7 @@ export default function EditUnitFile() {
   return (
     <>
       {showModal && (
-        <Modal
-          show={showModal}
-          size="lg"
-          onClose={() => setShowModal(false)}
-          popup
-        >
+        <Modal show={showModal} size="lg" onClose={handleClose} popup>
           <Modal.Header />
           <Modal.Body>
             <form className="text-center" onSubmit={handleSubmit}>
@@ -120,12 +111,13 @@ export default function EditUnitFile() {
                   <div className="flex items-center">
                     <strong className="mr-2">Unit Number:</strong>
                     <input
-                      className="w-48 ml-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 px-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      className="w-48 ml-2 opacity-30 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 px-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 hover:bg-red-100"
                       type="text"
                       name="unitNumber"
                       value={formData.unitNumber}
                       onChange={handleInputChange}
                       required
+                      disabled
                     />
                   </div>
                 </div>
@@ -133,7 +125,7 @@ export default function EditUnitFile() {
                   <div className="flex items-start">
                     <strong className="mr-2 mb-2">Residents:</strong>
                   </div>
-                  {formData.residents.map((resident, index) => (
+                  {residents.map((resident, index) => (
                     <div key={index} className="mb-4">
                       <input
                         className="w-48 mb-2 mr-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 px-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"

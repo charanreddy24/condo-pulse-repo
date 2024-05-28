@@ -70,3 +70,42 @@ export const getUnitFiles = async (req, res, next) => {
     next(error);
   }
 };
+
+export const updateUnitFile = async (req, res, next) => {
+  try {
+    const { id: unitFileId } = req.params;
+    const { unitNumber, residents, licensePlate, spotDetails } = req.body;
+
+    const residentIds = await Promise.all(
+      residents.map(async (residentData) => {
+        if (residentData._id) {
+          const updatedResident = await Resident.findByIdAndUpdate(
+            residentData._id,
+            residentData,
+            { new: true },
+          );
+          return updatedResident._id;
+        } else {
+          const newResident = new Resident(residentData);
+          await newResident.save();
+          return newResident._id;
+        }
+      }),
+    );
+
+    const updatedUnitFile = await UnitFile.findByIdAndUpdate(
+      unitFileId,
+      {
+        unitNumber,
+        residents: residentIds,
+        licensePlate,
+        spotDetails,
+      },
+      { new: true },
+    ).populate('residents');
+
+    res.status(200).json({ updatedUnitFile });
+  } catch (error) {
+    next(error);
+  }
+};
