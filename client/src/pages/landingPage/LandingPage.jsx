@@ -51,7 +51,7 @@ const LandingPage = () => {
   };
 
   return (
-    <div className="flex bg-slate-200 ">
+    <div className="flex bg-slate-200 h-dvh overflow-x-auto overflow-y-hidden">
       <div
         className={`${
           showSidebar ? 'block' : 'hidden'
@@ -60,7 +60,7 @@ const LandingPage = () => {
         <Sidebar handleSideBarButtonClick={handleSideBarButtonClick} />
       </div>
 
-      <div className="h-dvh w-full flex flex-col p-2 gap-y-2 shrink-0 lg:flex-shrink">
+      <div className=" w-full flex flex-col p-2 gap-y-2 shrink-0 lg:flex-shrink ">
         <Header handleSidebarToggle={handleSidebarToggle} />
         {renderSelectedPage()}
       </div>
