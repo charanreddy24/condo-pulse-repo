@@ -14,7 +14,7 @@ const FormOne = ({
   return (
     <form
       onSubmit={handleFormOneSave}
-      className="flex flex-col gap-2 h-full sm:shrink-0 "
+      className="flex flex-col gap-2 h-4/5 sm:shrink-0 overflow-y-auto"
     >
       <div className="text-sm p-4 w-full bg-white dark:bg-gray-800 rounded-lg flex flex-col ">
         <div className="flex self-center mb-4">
