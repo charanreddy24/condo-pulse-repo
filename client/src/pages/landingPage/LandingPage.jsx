@@ -4,7 +4,7 @@ import Sidebar from '/src/pages/landingPage/sidebar/Sidebar.jsx';
 import Header from '/src/pages/landingPage/header/Header.jsx';
 import MainBody from '/src/pages/landingPage/body-components/MainBody.jsx';
 import UnitFile from '/src/pages/landingPage/body-components/UnitFile.jsx';
-import ShiftLog from '/src/pages/landingPage/body-components/ShiftLog.jsx';
+import ShiftLog from '/src/pages/landingPage/body-components/shiftLog/ShiftLog.jsx';
 import PassOn from '/src/pages/landingPage/body-components/PassOn.jsx';
 
 const LandingPage = () => {
@@ -51,7 +51,7 @@ const LandingPage = () => {
   };
 
   return (
-    <div className="flex bg-slate-200 overflow-x-auto">
+    <div className="flex bg-slate-200 ">
       <div
         className={`${
           showSidebar ? 'block' : 'hidden'

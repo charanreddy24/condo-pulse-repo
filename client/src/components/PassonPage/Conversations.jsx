@@ -13,7 +13,7 @@ const Conversations = () => {
         const res = await fetch('/api/user/getUsers');
         const data = await res.json();
         if (res.ok) {
-          setConversations((prev) => [...prev, ...data.usersList]);
+          setConversations((prev) => [...prev, ...data.users]);
           setLoading(false);
         }
       } catch (error) {

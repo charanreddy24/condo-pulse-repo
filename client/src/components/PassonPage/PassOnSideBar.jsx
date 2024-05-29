@@ -6,7 +6,7 @@ const PassOnSideBar = () => {
     <div className="border-2 border-indigo-500/50 rounded-lg  p-4 mt-2 ml-2 flex flex-col">
       <SearchInput />
 
-      <div className="">
+      <div className="overflow-y-auto">
         <Conversations />
       </div>
     </div>
