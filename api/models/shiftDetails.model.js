@@ -27,6 +27,14 @@ const shiftDetailsSchema = new mongoose.Schema(
       ref: 'Uniform',
       required: true,
     },
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+    },
+    shiftActive: {
+      type: Boolean,
+      default: true,
+    },
   },
   { timestamps: true },
 );

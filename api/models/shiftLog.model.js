@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const shiftLog = new mongoose.Schema(
+const logSchema = new mongoose.Schema(
   {
     time: {
       type: String,
@@ -14,6 +14,29 @@ const shiftLog = new mongoose.Schema(
   { timestamps: true },
 );
 
-const ShiftLog = mongoose.model('ShiftLog', shiftLog);
+const shiftLogSchema = new mongoose.Schema(
+  {
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+    },
+    logs: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Log',
+        default: [],
+      },
+    ],
+    shiftDetails: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'ShiftDetails',
+      required: true,
+    },
+  },
+  { timestamps: true },
+);
 
-export default ShiftLog;
+const Log = mongoose.model('Log', logSchema);
+const ShiftLog = mongoose.model('ShiftLog', shiftLogSchema);
+
+export { Log, ShiftLog };
