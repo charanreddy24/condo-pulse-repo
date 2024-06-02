@@ -3,6 +3,7 @@ import { Button, Navbar } from 'flowbite-react';
 import { useNavigate } from 'react-router-dom';
 import { FaHome } from 'react-icons/fa';
 import { HiIdentification, HiClock, HiUser } from 'react-icons/hi';
+import { FcTimeline } from 'react-icons/fc';
 import { PiHandshake } from 'react-icons/pi';
 import React from 'react';
 
@@ -27,6 +28,18 @@ const Sidebar = ({ handleSideBarButtonClick }) => {
         >
           <FaHome className="text-xl mr-2 text-slate-600 dark:text-white" />
           Home
+        </Button>
+
+        <Button
+          className="w-full md:mb-4 sm:mb-1"
+          gradientDuoTone="purpleToBlue"
+          outline
+          text="Timeline"
+          onClick={() => handleClick('Timeline')}
+          pill
+        >
+          <FcTimeline className="text-xl mr-2 text-slate-600 dark:text-white" />
+          Timeline
         </Button>
 
         <Button

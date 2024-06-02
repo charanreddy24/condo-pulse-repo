@@ -11,12 +11,20 @@ export const createShift = async (req, res, next) => {
       endTime,
       relieved,
       toBeRelievedBy,
+      creator,
       equipment,
       uniform,
       userId,
     } = req.body;
 
-    if (!startTime || !endTime || !relieved || !toBeRelievedBy || !userId) {
+    if (
+      !startTime ||
+      !endTime ||
+      !relieved ||
+      !toBeRelievedBy ||
+      !userId ||
+      !creator
+    ) {
       return next(errorHandler(400, 'Must provide shift entry details'));
     }
 
@@ -37,6 +45,7 @@ export const createShift = async (req, res, next) => {
       endTime,
       relieved,
       toBeRelievedBy,
+      creator,
       equipment,
       uniform: uniformData,
       userId,
@@ -124,6 +133,26 @@ export const getShiftLogs = async (req, res, next) => {
     }
 
     res.status(200).json(latestShift.logs);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getShiftReports = async (req, res, next) => {
+  try {
+    const startIndex = parseInt(req.query.startIndex) || 0;
+    const limit = parseInt(req.query.limit) || 6;
+    const sortDirection = req.query.sort === 'asc' ? 1 : -1;
+
+    const shiftReports = await ShiftLog.find({})
+      .populate('shiftDetails')
+      .populate('logs')
+      .sort({ createdAt: sortDirection })
+      .skip(startIndex)
+      .limit(limit)
+      .exec();
+
+    res.status(200).json({ reports: shiftReports });
   } catch (error) {
     next(error);
   }

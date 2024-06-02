@@ -46,6 +46,7 @@ export default function ShiftLog() {
     endTime: times.end,
     relieved: '',
     toBeRelievedBy: '',
+    creator: currentUser.username,
     equipment: '',
     uniform: {
       whiteShirt: false,

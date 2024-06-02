@@ -6,6 +6,7 @@ import MainBody from '/src/pages/landingPage/body-components/MainBody.jsx';
 import UnitFile from '/src/pages/landingPage/body-components/UnitFile.jsx';
 import ShiftLog from '/src/pages/landingPage/body-components/shiftLog/ShiftLog.jsx';
 import PassOn from '/src/pages/landingPage/body-components/PassOn.jsx';
+import TimelineDashboard from '/src/pages/landingPage/body-components/Timeline.jsx';
 
 const LandingPage = () => {
   const [selectedOption, setSelectedOption] = useState('Incident Report');
@@ -34,6 +35,8 @@ const LandingPage = () => {
             handleSelectChange={handleSelectChange}
           />
         );
+      case 'Timeline':
+        return <TimelineDashboard />;
       case 'UnitFile':
         return <UnitFile />;
       case 'ShiftLog':
