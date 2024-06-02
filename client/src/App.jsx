@@ -18,6 +18,7 @@ import EditUnitFile from './components/Modals/EditUnitFile.jsx';
 import ScrollToTop from './components/ScrollToTop.jsx';
 import { Toaster } from 'react-hot-toast';
 import Search from './components/Search.jsx';
+import ViewShiftReportModal from './components/Modals/ViewShiftReportModal.jsx';
 
 export default function App() {
   const { currentUser } = useSelector((state) => state.user);
@@ -39,6 +40,10 @@ export default function App() {
           <Route
             path="/view-incidentReport/:incidentReportId"
             element={<ViewIncidentReportModal />}
+          />
+          <Route
+            path="/viewShiftReport/:shiftLogId"
+            element={<ViewShiftReportModal />}
           />
           <Route path="/edit/:unitFileId" element={<EditUnitFile />} />
         </Route>

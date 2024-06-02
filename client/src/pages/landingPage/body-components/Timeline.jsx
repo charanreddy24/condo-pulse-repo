@@ -82,7 +82,7 @@ export default function TimelineDashboard() {
                   <Timeline.Point icon={HiCalendar} />
                   <Timeline.Content className="p-4">
                     <Link
-                      to={`/view-shiftReport/${report._id}`}
+                      to={`/viewShiftReport/${report._id}`}
                       className=" hover:underline mt-2 block"
                     >
                       <Timeline.Time className="text-lg font-semibold text-teal-500">

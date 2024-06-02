@@ -6,6 +6,8 @@ import {
   saveLog,
   getShiftLogs,
   getShiftReports,
+  viewShiftReport,
+  getUniform,
 } from '../controllers/shiftLog.controller.js';
 
 const router = express.Router();
@@ -15,5 +17,7 @@ router.post('/saveLog', verifyToken, saveLog);
 router.get('/checkActiveShift', verifyToken, checkActiveShift);
 router.get('/getShiftLogs', getShiftLogs);
 router.get('/getShiftReports', getShiftReports);
+router.get('/viewShiftReport/:shiftLogId', viewShiftReport);
+router.get('/uniform/:uniformId', getUniform);
 
 export default router;

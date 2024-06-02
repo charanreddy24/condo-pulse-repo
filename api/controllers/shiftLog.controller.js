@@ -157,3 +157,31 @@ export const getShiftReports = async (req, res, next) => {
     next(error);
   }
 };
+
+export const viewShiftReport = async (req, res, next) => {
+  try {
+    const { shiftLogId } = req.params;
+    const completeShiftReport = await ShiftLog.findById(shiftLogId)
+      .populate('shiftDetails')
+      .populate('logs');
+    if (!completeShiftReport) {
+      return next(errorHandler(404, 'No Shift Found'));
+    }
+    res.status(200).json(completeShiftReport);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getUniform = async (req, res, next) => {
+  try {
+    const { uniformId } = req.params;
+    const uniformDetails = await Uniform.findById(uniformId);
+    if (!uniformDetails) {
+      return next(errorHandler(404, 'No uniform Details Found'));
+    }
+    res.status(200).json(uniformDetails);
+  } catch (error) {
+    next(error);
+  }
+};
