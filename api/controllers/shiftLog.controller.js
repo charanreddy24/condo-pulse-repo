@@ -107,3 +107,24 @@ export const checkActiveShift = async (req, res, next) => {
     next(error);
   }
 };
+
+export const getShiftLogs = async (req, res, next) => {
+  try {
+    const { userId } = req.query;
+
+    const latestShift = await ShiftLog.findOne({ userId })
+      .sort({ createdAt: -1 })
+      .populate({
+        path: 'logs',
+        model: Log,
+      });
+
+    if (!latestShift) {
+      return next(errorHandler(404, 'No active Shift Found'));
+    }
+
+    res.status(200).json(latestShift.logs);
+  } catch (error) {
+    next(error);
+  }
+};

@@ -34,6 +34,7 @@ export default function ShiftLog() {
   const [loggedTime, setLoggedTime] = useState(new Date().toLocaleString());
   const [logs, setLogs] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [formOneSubmitted, setFormOneSubmitted] = useState(false);
 
   const [quillData, setQuillData] = useState({
     description: '',
@@ -85,7 +86,7 @@ export default function ShiftLog() {
       } catch (error) {
         console.log(error);
       } finally {
-        setLoading(false); // Set loading to false after the check is complete
+        setLoading(false);
       }
     };
     checkActiveShift();
@@ -93,12 +94,33 @@ export default function ShiftLog() {
 
   // Automatic form submission after 13 hours
   useEffect(() => {
-    const timer = setTimeout(() => {
-      console.log('Automatic form submission:', formOneData, logs);
-    }, 100000);
+    if (formOneSubmitted) {
+      const timer = setTimeout(() => {
+        console.log('Automatic form submission:', formOneData, logs);
+      }, 100000);
 
-    return () => clearTimeout(timer);
-  }, [formOneData, logs]);
+      return () => clearTimeout(timer);
+    }
+  }, [formOneData, logs, formOneSubmitted]);
+
+  useEffect(() => {
+    const fetchShiftLogs = async () => {
+      try {
+        const res = await fetch(
+          `/api/shiftLog/getShiftLogs?userId=${currentUser._id}`,
+        );
+        const data = await res.json();
+        if (res.ok) {
+          setLogs(data);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    if (shiftId) {
+      fetchShiftLogs();
+    }
+  }, [shiftId, currentUser]);
 
   const handleFormOneInputChange = (e) => {
     const { name, value } = e.target;
@@ -139,6 +161,7 @@ export default function ShiftLog() {
         setShiftId(data.shiftLog._id);
         setTopForm(false);
         setBottomForm(true);
+        setFormOneSubmitted(true);
       }
     } catch (error) {
       toast.error(error.message);
