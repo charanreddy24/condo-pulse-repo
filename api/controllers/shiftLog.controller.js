@@ -60,8 +60,7 @@ export const createShift = async (req, res, next) => {
     await shiftLog.save();
 
     schedule.scheduleJob(
-      // new Date(Date.now() + 13 * 60 * 60 * 1000),
-      new Date(Date.now() + 100000),
+      new Date(Date.now() + 13 * 60 * 60 * 1000),
       async () => {
         shiftDetails.shiftActive = false;
         await shiftDetails.save();

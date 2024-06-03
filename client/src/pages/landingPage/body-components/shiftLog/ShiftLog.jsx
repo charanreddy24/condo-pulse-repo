@@ -98,7 +98,7 @@ export default function ShiftLog() {
     if (formOneSubmitted) {
       const timer = setTimeout(() => {
         console.log('Automatic form submission:', formOneData, logs);
-      }, 100000);
+      }, 13 * 60 * 60 * 1000);
 
       return () => clearTimeout(timer);
     }

@@ -151,7 +151,7 @@ export default function ViewShiftReportModal() {
                             <>
                               <div className="flex items-center">
                                 {uniformData.whiteShirt ? (
-                                  <IoIosCheckmark className="text-green-500 text-3xl" />
+                                  <IoIosCheckmark className="text-green-500 text-3xl ml-[-3]" />
                                 ) : (
                                   <FaTimes className="text-red-500 text-xl" />
                                 )}
@@ -159,7 +159,7 @@ export default function ViewShiftReportModal() {
                               </div>
                               <div className="flex items-center">
                                 {uniformData.blackTie ? (
-                                  <IoIosCheckmark className="text-green-500 text-3xl" />
+                                  <IoIosCheckmark className="text-green-500 text-3xl ml-[-3]" />
                                 ) : (
                                   <FaTimes className="text-red-500 text-xl" />
                                 )}
@@ -168,7 +168,7 @@ export default function ViewShiftReportModal() {
                               </div>
                               <div className="flex items-center">
                                 {uniformData.badgeID ? (
-                                  <IoIosCheckmark className="text-green-500 text-3xl" />
+                                  <IoIosCheckmark className="text-green-500 text-3xl ml-[-3]" />
                                 ) : (
                                   <FaTimes className="text-red-500 text-xl" />
                                 )}
@@ -177,7 +177,7 @@ export default function ViewShiftReportModal() {
                               </div>
                               <div className="flex items-center">
                                 {uniformData.blackPants ? (
-                                  <IoIosCheckmark className="text-green-500 text-3xl" />
+                                  <IoIosCheckmark className="text-green-500 text-3xl ml-[-3]" />
                                 ) : (
                                   <FaTimes className="text-red-500 text-xl" />
                                 )}
@@ -186,7 +186,7 @@ export default function ViewShiftReportModal() {
                               </div>
                               <div className="flex items-center">
                                 {uniformData.securityLogoBlazer ? (
-                                  <IoIosCheckmark className="text-green-500 text-3xl" />
+                                  <IoIosCheckmark className="text-green-500 text-3xl ml-[-3]" />
                                 ) : (
                                   <FaTimes className="text-red-500 text-xl" />
                                 )}
