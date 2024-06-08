@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react';
 import { Spinner } from 'flowbite-react';
 import Conversation from './Conversation.jsx';
+import { useDispatch } from 'react-redux';
+import { setUnreadCounts } from '/src/redux/conversations/conversationsSlice.js';
 
 const Conversations = () => {
   const [loading, setLoading] = useState(false);
   const [conversations, setConversations] = useState([]);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const getConversations = async () => {
@@ -21,8 +24,23 @@ const Conversations = () => {
         setLoading(false);
       }
     };
+
+    const fetchUnreadCounts = async () => {
+      try {
+        const res = await fetch('/api/messages/unreadCounts');
+        const data = await res.json();
+        console.log(data);
+        if (res.ok) {
+          dispatch(setUnreadCounts(data));
+        }
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+
     getConversations();
-  }, []);
+    fetchUnreadCounts();
+  }, [dispatch]);
 
   return (
     <div className="py-2 flex flex-col overflow-auto">

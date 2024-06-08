@@ -22,14 +22,13 @@ export const sendMessage = async (req, res, next) => {
       senderId,
       receiverId,
       message,
+      isRead: false,
     });
 
     if (newMessage) {
       conversation.messages.push(newMessage._id);
     }
 
-    // await conversation.save();
-    // await newMessage.save();
     await Promise.all([conversation.save(), newMessage.save()]);
 
     const receiverSocketId = getReceiverSocketId(receiverId);
@@ -56,8 +55,51 @@ export const getMessages = async (req, res, next) => {
     if (!conversation) return res.status(200).json([]);
 
     const messages = conversation.messages;
+    messages.forEach(async (message) => {
+      if (
+        message.receiverId.toString() === senderId.toString() &&
+        !message.isRead
+      ) {
+        message.isRead = true;
+        await message.save();
+      }
+    });
 
     res.status(200).json(messages);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getUnreadCounts = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+
+    const conversations = await Conversation.find({
+      participants: userId,
+    }).populate('messages');
+
+    const unreadCounts = {};
+
+    conversations.forEach((conversation) => {
+      const otherUserId = conversation.participants.find(
+        (id) => id.toString() !== userId.toString(),
+      );
+
+      const unreadMessages = conversation.messages.filter(
+        (message) =>
+          message.receiverId.toString() === userId.toString() &&
+          !message.isRead,
+      );
+
+      if (!unreadCounts[otherUserId]) {
+        unreadCounts[otherUserId] = 0;
+      }
+
+      unreadCounts[otherUserId] += unreadMessages.length;
+    });
+
+    res.status(200).json(unreadCounts);
   } catch (error) {
     next(error);
   }

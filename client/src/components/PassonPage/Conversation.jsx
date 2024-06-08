@@ -1,16 +1,27 @@
 import { Avatar } from 'flowbite-react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setSelectedConversation } from '/src/redux/conversations/conversationsSlice.js';
+import {
+  setSelectedConversation,
+  clearUnreadCount,
+} from '/src/redux/conversations/conversationsSlice.js';
 import { useSocketContext } from '../SocketContext.jsx';
 
 const Conversation = ({ conversation, lastIdx }) => {
-  const { selectedConversation } = useSelector((state) => state.conversations);
+  const { selectedConversation, unreadCounts } = useSelector(
+    (state) => state.conversations,
+  );
   const dispatch = useDispatch();
 
   const isSelected = selectedConversation?._id === conversation._id;
-
   const { onlineUsers } = useSocketContext();
   const isOnline = onlineUsers.includes(conversation._id);
+
+  const unreadCount = unreadCounts?.[conversation._id] || 0;
+
+  const handleClick = () => {
+    dispatch(setSelectedConversation(conversation));
+    dispatch(clearUnreadCount(conversation._id));
+  };
 
   return (
     <>
@@ -18,7 +29,7 @@ const Conversation = ({ conversation, lastIdx }) => {
         className={`flex gap-2 items-center border-2 bg-rose-50 dark:bg-slate-500 border-rose-100 rounded-lg p-5 cursor-pointer ${
           isSelected ? 'bg-violet-300 dark:bg-violet-400' : ''
         }`}
-        onClick={() => dispatch(setSelectedConversation(conversation))}
+        onClick={handleClick}
       >
         <Avatar
           alt="user"
@@ -31,6 +42,11 @@ const Conversation = ({ conversation, lastIdx }) => {
         <div className="flex flex-col flex-1">
           <div className="flex gap-3 justify-between">
             <p className="ml-2">{conversation.username}</p>
+            {unreadCount > 0 && (
+              <span className="ml-2 text-red-500 font-semibold bg-white p-1.5 mt-2 rounded-full">
+                {unreadCount}
+              </span>
+            )}
           </div>
         </div>
       </div>
