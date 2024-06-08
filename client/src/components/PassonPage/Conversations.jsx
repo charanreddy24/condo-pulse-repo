@@ -29,7 +29,7 @@ const Conversations = () => {
       try {
         const res = await fetch('/api/messages/unreadCounts');
         const data = await res.json();
-        console.log(data);
+
         if (res.ok) {
           dispatch(setUnreadCounts(data));
         }
