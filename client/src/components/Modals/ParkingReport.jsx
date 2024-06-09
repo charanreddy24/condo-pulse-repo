@@ -194,12 +194,6 @@ export default function ParkingReportModal({ cardsArray, setCardsArray }) {
                         </div>
                       </div>
                       <div className="col-span-2 flex flex-col justify-around gap-2 sm:flex-row">
-                        <div className="flex items-center ">
-                          <strong className="mr-2 sm:ml-[-40px]">
-                            Passes Left:
-                          </strong>
-                          <p>Unit has 4 passes left for the Month</p>
-                        </div>
                         <div className="flex items-center">
                           <strong className="mr-2 ">Authorized Officer:</strong>
                           <span>{currentUser ? currentUser.username : ''}</span>
