@@ -1,3 +1,4 @@
+import path from 'path';
 import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
@@ -12,6 +13,8 @@ import shiftLogRoute from './routes/shiftLog.route.js';
 import infoPagesRoute from './routes/infoPages.route.js';
 import cookieParser from 'cookie-parser';
 import { app, server } from './socket/socket.js';
+
+const __dirname = path.resolve();
 
 dotenv.config();
 
@@ -40,6 +43,12 @@ app.use('/api/messages', messageRoutes);
 app.use('/api/unitFile', unitFileRoutes);
 app.use('/api/shiftLog', shiftLogRoute);
 app.use('/api/infoPages', infoPagesRoute);
+
+app.use(express.static(path.join(__dirname, '/client/dist')));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'));
+});
 
 //Middleware to handle the errors more effectively
 app.use((err, req, res, next) => {
