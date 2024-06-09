@@ -6,6 +6,7 @@
   "main": "src/index.tsx",
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.2",
+    "axios": "^1.7.2",
     "dot-env": "^0.0.1",
     "firebase": "^10.9.0",
     "flowbite-react": "0.7.3",

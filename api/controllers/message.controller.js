@@ -104,3 +104,20 @@ export const getUnreadCounts = async (req, res, next) => {
     next(error);
   }
 };
+
+export const unreadMessages = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    const unreadMessages = await Message.find({
+      receiverId: userId,
+      isRead: false,
+    });
+    if (unreadMessages.length > 0) {
+      return res.status(200).json({ hasUnreadMessages: true, unreadMessages });
+    }
+
+    return res.status(200).json({ hasUnreadMessages: false });
+  } catch (error) {
+    next(error);
+  }
+};

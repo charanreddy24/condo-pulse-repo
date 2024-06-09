@@ -19,6 +19,7 @@ import ScrollToTop from './components/ScrollToTop.jsx';
 import { Toaster } from 'react-hot-toast';
 import Search from './components/Search.jsx';
 import ViewShiftReportModal from './components/Modals/ViewShiftReportModal.jsx';
+import UnreadMessageModal from './components/Modals/UnreadMessageModal.jsx';
 
 export default function App() {
   const { currentUser } = useSelector((state) => state.user);
@@ -27,6 +28,7 @@ export default function App() {
       <ScrollToTop />
       <NavbarHeader />
       <Toaster />
+      <UnreadMessageModal />
       <Routes>
         <Route path="/home" element={<Home />} />
         <Route path="/PostOrders" element={<PostOrders />} />

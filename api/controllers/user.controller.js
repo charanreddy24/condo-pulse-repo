@@ -68,7 +68,22 @@ export const getUsers = async (req, res, next) => {
   try {
     const userId = req.user.id;
 
+    //Getting only already established chats
     const usersBasedOnLastMessage = await getUsersBasedOnLastMessage(userId);
+
+    const userIdsFromLastMessage = new Set(
+      usersBasedOnLastMessage.map((user) => user._id.toString()),
+    );
+
+    const usersWithOutCurrentUser = await User.find({
+      _id: { $ne: userId, $nin: [...userIdsFromLastMessage] },
+    }).lean();
+
+    //Combining both the established chats and remaining users
+    const remainingUsers = [
+      ...usersBasedOnLastMessage,
+      ...usersWithOutCurrentUser,
+    ];
 
     const usersList = await User.find({ _id: { $ne: userId } }).lean();
     const allUsersList = await User.find({}).lean();
@@ -82,9 +97,8 @@ export const getUsers = async (req, res, next) => {
 
     const usersPasswordRemoved = removePassword(usersList);
     const allUsersWithoutPassword = removePassword(allUsersList);
-    const usersBasedOnLastMessageWithoutPassword = removePassword(
-      usersBasedOnLastMessage,
-    );
+    const usersBasedOnLastMessageWithoutPassword =
+      removePassword(remainingUsers);
 
     const filteredUsersBasedOnLastMessage =
       usersBasedOnLastMessageWithoutPassword.filter(
@@ -99,4 +113,10 @@ export const getUsers = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
+};
+
+export const getUserDetails = async (req, res, next) => {
+  const userId = req.params;
+  const userDetails = await User.findById(userId).lean();
+  res.status(200).json({ userDetails });
 };
