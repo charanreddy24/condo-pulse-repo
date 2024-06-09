@@ -31,13 +31,13 @@ export default function App() {
       <UnreadMessageModal />
       <Routes>
         <Route path="/home" element={<Home />} />
-        <Route path="/PostOrders" element={<PostOrders />} />
-        <Route path="/ImportantContacts" element={<ImportantContacts />} />
         <Route path="/Careers" element={<Careers />} />
         <Route path="/About" element={<About />} />
         <Route element={<PrivateRoute />}>
           <Route path="/" element={<LandingPage />} />
           <Route path="/search" element={<Search />} />
+          <Route path="/PostOrders" element={<PostOrders />} />
+          <Route path="/ImportantContacts" element={<ImportantContacts />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route
             path="/view-incidentReport/:incidentReportId"

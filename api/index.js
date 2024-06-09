@@ -9,6 +9,7 @@ import commentRoutes from './routes/comment.route.js';
 import messageRoutes from './routes/message.route.js';
 import unitFileRoutes from './routes/unitFile.route.js';
 import shiftLogRoute from './routes/shiftLog.route.js';
+import infoPagesRoute from './routes/infoPages.route.js';
 import cookieParser from 'cookie-parser';
 import { app, server } from './socket/socket.js';
 
@@ -38,6 +39,7 @@ app.use('/api/comment', commentRoutes);
 app.use('/api/messages', messageRoutes);
 app.use('/api/unitFile', unitFileRoutes);
 app.use('/api/shiftLog', shiftLogRoute);
+app.use('/api/infoPages', infoPagesRoute);
 
 //Middleware to handle the errors more effectively
 app.use((err, req, res, next) => {
