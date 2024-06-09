@@ -1,6 +1,7 @@
 import errorHandler from '../utils/error.js';
 import bcryptjs from 'bcryptjs';
 import User from '../models/user.model.js';
+import { getUsersBasedOnLastMessage } from '../utils/getUsersBasedOnLastMessage.js';
 
 export const test = (req, res) => {
   res.json({ message: 'API is working' });
@@ -66,22 +67,34 @@ export const signout = async (req, res, next) => {
 export const getUsers = async (req, res, next) => {
   try {
     const userId = req.user.id;
-    const usersList = await User.find({ _id: { $ne: userId } });
-    const allUsersList = await User.find({});
 
-    const usersWithoutPassword = (userList) => {
+    const usersBasedOnLastMessage = await getUsersBasedOnLastMessage(userId);
+
+    const usersList = await User.find({ _id: { $ne: userId } }).lean();
+    const allUsersList = await User.find({}).lean();
+
+    const removePassword = (userList) => {
       return userList.map((user) => {
-        const { password, ...rest } = user._doc;
+        const { password, ...rest } = user;
         return rest;
       });
     };
 
-    const usersPasswordRemoved = usersWithoutPassword(usersList);
-    const allUsersWithoutPassword = usersWithoutPassword(allUsersList);
+    const usersPasswordRemoved = removePassword(usersList);
+    const allUsersWithoutPassword = removePassword(allUsersList);
+    const usersBasedOnLastMessageWithoutPassword = removePassword(
+      usersBasedOnLastMessage,
+    );
+
+    const filteredUsersBasedOnLastMessage =
+      usersBasedOnLastMessageWithoutPassword.filter(
+        (user) => user._id.toString() !== userId,
+      );
 
     res.status(200).json({
       users: usersPasswordRemoved,
       allUsers: allUsersWithoutPassword,
+      usersBasedOnLastMessage: filteredUsersBasedOnLastMessage,
     });
   } catch (error) {
     next(error);

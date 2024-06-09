@@ -16,7 +16,10 @@ const Conversations = () => {
         const res = await fetch('/api/user/getUsers');
         const data = await res.json();
         if (res.ok) {
-          setConversations((prev) => [...prev, ...data.users]);
+          setConversations((prev) => [
+            ...prev,
+            ...data.usersBasedOnLastMessage,
+          ]);
           setLoading(false);
         }
       } catch (error) {
