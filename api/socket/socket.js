@@ -5,6 +5,15 @@ import cors from 'cors';
 
 const app = express();
 
+// CORS configuration
+const corsOptions = {
+  origin: 'https://hd-protective-services.onrender.com',
+  methods: ['GET', 'POST', 'PUT'],
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
+
 const server = http.createServer(app);
 
 const io = new Server(server, {

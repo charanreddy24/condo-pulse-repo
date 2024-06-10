@@ -15,7 +15,7 @@ export const SocketContextProvider = ({ children }) => {
 
   useEffect(() => {
     if (currentUser) {
-      const socket = io('http://localhost:3000', {
+      const socket = io('https://hd-protective-services.onrender.com', {
         query: {
           userId: currentUser._id,
         },
