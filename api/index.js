@@ -60,3 +60,8 @@ app.use((err, req, res, next) => {
     message,
   });
 });
+
+process.on('unhandledRejection', (error) => {
+  console.error('Unhandled Rejection:', error);
+  process.exit(1);
+});

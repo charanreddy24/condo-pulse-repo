@@ -116,7 +116,7 @@ export const getUsers = async (req, res, next) => {
 };
 
 export const getUserDetails = async (req, res, next) => {
-  const userId = req.params;
+  const userId = req.params.userId;
   const userDetails = await User.findById(userId).lean();
   res.status(200).json({ userDetails });
 };
