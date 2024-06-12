@@ -260,7 +260,7 @@ const Card = ({
             </p>
           </div>
         </Link>
-        <div className="flex items-center justify-between gap-1 text-sm text-black font-medium p-1">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-1 text-sm text-black font-medium p-1">
           <p className="">Logged by: {loggedBy}</p>
           <p className="">Type of Incident: {incidentType}</p>
         </div>

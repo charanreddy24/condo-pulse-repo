@@ -195,7 +195,7 @@ const Card = ({
         className="cursor-grab border  rounded bg-gradient-to-r from-red-200 via-mint-500 to-purple-200 outline outline-1 outline-gray-300 p-3 active:cursor-grabbing"
       >
         <h3 className="font-medium ">Visiting Unit: {visitingUnitNumber}</h3>
-        <div className="flex items-center justify-between gap-1 text-sm text-black font-medium">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-1 text-sm text-black font-medium">
           <p className="">Visitor Name: {visitorName}</p>
           <p className="">License Plate: {licensePlate}</p>
         </div>
