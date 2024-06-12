@@ -78,6 +78,7 @@ export default function DashIncidentReports() {
                         <a
                           key={index}
                           href={file.fileUrl}
+                          target="_blank"
                           download={file.filename}
                           className="text-teal-500 dark:text-teal-300 hover:underline hover:cursor-pointer"
                         >

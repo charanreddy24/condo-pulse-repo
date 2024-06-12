@@ -113,7 +113,7 @@ const ImportantContacts = () => {
         ) : (
           <div className="flex justify-center bg-gray-100 dark:bg-gray-700 p-6 rounded-lg shadow-md dark:text-white h-2/3">
             <div
-              className="prose dark:prose-dark flex flex-col items-center "
+              className="prose dark:prose-dark flex flex-col items-center dark:text-white"
               dangerouslySetInnerHTML={{ __html: quillContent }}
             />
           </div>

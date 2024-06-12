@@ -26,7 +26,7 @@ const MessageContainer = () => {
         <>
           <div className="px-4 py-2 mb-2">
             <span className="label-text"> To:</span>
-            <span className="text-gray-900 font-bold">
+            <span className="text-gray-900 dark:text-white font-bold">
               {selectedConversation.username}
             </span>
           </div>
